@@ -86,8 +86,6 @@ persisted_queries.json
 *.key
 *.p12
 *.pfx
-*.cer
-*.crt
 *.der
 *.csr
 *.p7b
@@ -95,39 +93,44 @@ persisted_queries.json
 *.jks
 *.keystore
 *.truststore
+*-key.pem
+*-private.pem
+*-private.key
+*.private.key
 
 # SSH Keys
-id_rsa
-id_dsa
-id_ecdsa
-id_ed25519
+/id_rsa
+/id_dsa
+/id_ecdsa
+/id_ed25519
 *.ppk
-known_hosts
-authorized_keys
+/known_hosts
+/authorized_keys
 
 # API Keys and Secrets
 .env.secret
 .env.*.secret
-secrets.json
-secrets.yaml
-secrets.yml
-secret.json
-secret.yaml
-secret.yml
-credentials.json
-credentials.yaml
-credentials.yml
-apikeys.json
-apikeys.yaml
+/secrets.json
+/secrets.yaml
+/secrets.yml
+/secret.json
+/secret.yaml
+/secret.yml
+/credentials.json
+/credentials.yaml
+/credentials.yml
+/apikeys.json
+/apikeys.yaml
+/apikeys.txt
 
 # Cloud Provider Credentials
 .aws/credentials
 .aws/config
 .gcp/credentials
 .azure/credentials
-gcloud-service-key.json
-service-account.json
-service-account-*.json
+/gcloud-service-key.json
+/service-account.json
+/service-account-*.json
 
 # Database Credentials
 .pgpass
@@ -135,23 +138,20 @@ service-account-*.json
 .dbshell
 
 # Authentication
-auth.json
-token.json
-tokens.json
-jwt.json
-jwt.key
-oauth.json
+/auth.json
+/token.json
+/tokens.json
+/jwt.json
+/oauth.json
 .netrc
 
 # Password and Credential Files
-passwords.txt
-password.txt
-credentials.txt
-secrets.txt
-private.txt
+/passwords.txt
+/password.txt
+/credentials.txt
+/secrets.txt
+/private.txt
 
 # Backup of sensitive files
 *.env.backup
 *.secret.backup
-*.key.backup
-*.pem.backup
