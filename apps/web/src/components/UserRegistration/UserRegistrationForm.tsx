@@ -84,7 +84,7 @@ export default function UserRegistrationForm() {
   );
 
   const handleSubmit = useCallback(
-    async (event: React.FormEvent<HTMLFormElement>) => {
+    (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
       setSuccessMessage('');
       setErrors({});
@@ -95,37 +95,41 @@ export default function UserRegistrationForm() {
 
       setIsSubmitting(true);
 
-      try {
-        const response = await fetch('/api/auth/register', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            username: formData.username,
-            email: formData.email,
-            password: formData.password,
-          }),
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-          setErrors({ general: data.error || 'Registration failed. Please try again.' });
-        } else {
-          setSuccessMessage('Registration successful! You can now log in.');
-          setFormData({
-            username: '',
-            email: '',
-            password: '',
-            confirmPassword: '',
+      void (async () => {
+        try {
+          const response = await fetch('/api/auth/register', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              username: formData.username,
+              email: formData.email,
+              password: formData.password,
+            }),
           });
+
+          const data = (await response.json()) as
+            | { error: string }
+            | { message: string; user: { username: string; email: string } };
+
+          if (!response.ok) {
+            setErrors({ general: 'error' in data ? data.error : 'Registration failed. Please try again.' });
+          } else {
+            setSuccessMessage('Registration successful! You can now log in.');
+            setFormData({
+              username: '',
+              email: '',
+              password: '',
+              confirmPassword: '',
+            });
+          }
+        } catch (error) {
+          setErrors({ general: 'An error occurred. Please try again later.' });
+        } finally {
+          setIsSubmitting(false);
         }
-      } catch (error) {
-        setErrors({ general: 'An error occurred. Please try again later.' });
-      } finally {
-        setIsSubmitting(false);
-      }
+      })();
     },
     [formData, validateForm],
   );

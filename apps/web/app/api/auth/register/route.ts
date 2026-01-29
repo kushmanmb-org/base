@@ -1,8 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+type RegistrationBody = {
+  username: string;
+  email: string;
+  password: string;
+};
+
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
+    const body = (await request.json()) as RegistrationBody;
     const { username, email, password } = body;
 
     // Validate required fields
@@ -14,7 +20,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Validate username length
-    if (username.length < 3) {
+    if (typeof username !== 'string' || username.length < 3) {
       return NextResponse.json(
         { error: 'Username must be at least 3 characters' },
         { status: 400 }
@@ -23,7 +29,7 @@ export async function POST(request: NextRequest) {
 
     // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
+    if (typeof email !== 'string' || !emailRegex.test(email)) {
       return NextResponse.json(
         { error: 'Invalid email format' },
         { status: 400 }
@@ -31,7 +37,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Validate password length
-    if (password.length < 8) {
+    if (typeof password !== 'string' || password.length < 8) {
       return NextResponse.json(
         { error: 'Password must be at least 8 characters' },
         { status: 400 }
