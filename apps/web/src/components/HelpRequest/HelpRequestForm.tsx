@@ -103,6 +103,13 @@ export default function HelpRequestForm() {
     [formState, isSubmitting],
   );
 
+  const onSubmitHandler = useCallback(
+    (e: React.FormEvent<HTMLFormElement>) => {
+      void handleSubmit(e);
+    },
+    [handleSubmit],
+  );
+
   const isFormValid =
     formState.name.trim() !== '' &&
     formState.email.trim() !== '' &&
@@ -110,7 +117,7 @@ export default function HelpRequestForm() {
     formState.message.trim().length >= 10;
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+    <form onSubmit={onSubmitHandler} className="flex flex-col gap-6">
       <Fieldset>
         <Label htmlFor="name">Name *</Label>
         <input
