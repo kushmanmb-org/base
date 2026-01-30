@@ -447,7 +447,7 @@ function GlobeScene({ className }: { className?: string }) {
         fragmentShader={fragmentShader}
         customUniforms={customUniforms}
         onResize={handleResize}
-        borderRadiusCorners={[8, 8, 8, 8] as const}
+        borderRadiusCorners={[8, 8, 8, 8]}
       />
       <WebGlTunnelIn>
         <RenderTexture

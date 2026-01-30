@@ -21,7 +21,7 @@ export default function TransactionsFeesSection() {
     const viewportHeight = window.innerHeight;
 
     // Calculate progress based on the section's position
-    let newProgress;
+    let newProgress: number;
     const startPoint = viewportHeight * 0.8; // Section comes into view
     const endPoint = viewportHeight * 0.3; // 30% from the top of the viewport
 
