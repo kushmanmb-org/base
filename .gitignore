@@ -80,3 +80,75 @@ persisted_queries.json
 .eslintcache
 
 .vercel
+
+# Private Keys and Certificates
+*.pem
+*.key
+*.p12
+*.pfx
+*.der
+*.p7b
+*.p7c
+*.jks
+*.keystore
+*.truststore
+
+# SSH Keys (root-level only)
+/id_rsa
+/id_rsa.pub
+/id_dsa
+/id_dsa.pub
+/id_ecdsa
+/id_ecdsa.pub
+/id_ed25519
+/id_ed25519.pub
+/*.ppk
+/authorized_keys
+
+# API Keys and Secrets
+.env.secret
+.env.*.secret
+/secrets.json
+/secrets.yaml
+/secrets.yml
+/secret.json
+/secret.yaml
+/secret.yml
+/credentials.json
+/credentials.yaml
+/credentials.yml
+/apikeys.json
+/apikeys.yaml
+/apikeys.txt
+
+# Cloud Provider Credentials
+.aws/
+.gcp/
+.azure/
+/gcloud-service-key.json
+/service-account.json
+/service-account-*.json
+
+# Database Credentials
+.pgpass
+.my.cnf
+.dbshell
+
+# Authentication
+/auth.json
+/token.json
+/tokens.json
+/jwt.json
+/oauth.json
+.netrc
+
+# Password and Credential Files
+/passwords.txt
+/password.txt
+/credentials.txt
+/secrets.txt
+/private.txt
+
+# Backup of sensitive files
+*.env.backup
+*.secret.backup
