@@ -166,7 +166,7 @@ export function useRegisterNameCallback(
 
     if (!registerContractAddress || !resolverAddress) {
       const error = new Error(
-        `Missing contract addresses for chain ${basenameChain.id}: register=${!registerContractAddress}, resolver=${!resolverAddress}`,
+        `Missing contract addresses for chain ${basenameChain.id}: registerAddress=${registerContractAddress}, resolverAddress=${resolverAddress}`,
       );
       logError(error, 'Register name contract address lookup failed');
       return;
