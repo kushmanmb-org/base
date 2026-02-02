@@ -56,9 +56,7 @@ export default function UsernameProfileSectionHeatmap() {
     const maxAttempts = 50; // Limit polling attempts to prevent infinite loops
 
     const pollForRects = () => {
-      if (!containerRef.current) return;
-      
-      const rects = containerRef.current.querySelectorAll('rect');
+      const rects = containerElement.querySelectorAll('rect');
       attempts++;
       
       if (rects.length > 0) {
@@ -69,14 +67,14 @@ export default function UsernameProfileSectionHeatmap() {
         clearInterval(timerId);
 
         // this line ensures that if the element is scrollable it will be all the way right (showing newest cal data)
-        containerRef.current.scrollLeft = containerRef.current.scrollWidth;
+        containerElement.scrollLeft = containerElement.scrollWidth;
       } else if (attempts >= maxAttempts) {
         // Stop polling after max attempts to prevent indefinite polling
         clearInterval(timerId);
       }
     };
     
-    // Reduced polling frequency from 100ms to 200ms (5x per second instead of 10x)
+    // Reduced polling frequency from 100ms to 200ms (reduced from 10x per second to 5x per second)
     const timerId = setInterval(pollForRects, 200);
     
     return () => {
