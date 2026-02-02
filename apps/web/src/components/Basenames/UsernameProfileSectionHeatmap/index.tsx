@@ -116,22 +116,19 @@ export default function UsernameProfileSectionHeatmap() {
 
   const { profileAddress } = useUsernameProfile();
 
-  const generateHeatmapData = useMemo(
-    () => (transactions: Transaction[]): HeatmapValue[] => {
-      const dateMap: Record<string, HeatmapValue> = {};
-      transactions.forEach((tx) => {
-        const txDate = new Date(parseInt(tx.timeStamp) * 1000).toLocaleDateString();
-        dateMap[txDate] = dateMap[txDate]
-          ? { date: txDate, count: dateMap[txDate].count + 1 }
-          : { date: txDate, count: 1 };
-      });
-      return Object.values(dateMap);
-    },
-    [],
-  );
+  const generateHeatmapData = useCallback((transactions: Transaction[]): HeatmapValue[] => {
+    const dateMap: Record<string, HeatmapValue> = {};
+    transactions.forEach((tx) => {
+      const txDate = new Date(parseInt(tx.timeStamp) * 1000).toLocaleDateString();
+      dateMap[txDate] = dateMap[txDate]
+        ? { date: txDate, count: dateMap[txDate].count + 1 }
+        : { date: txDate, count: 1 };
+    });
+    return Object.values(dateMap);
+  }, []);
 
-  const calculateStreaksAndMetrics = useMemo(
-    () => (transactions: Transaction[], addrs: Address) => {
+  const calculateStreaksAndMetrics = useCallback(
+    (transactions: Transaction[], addrs: Address) => {
       const filteredTransactions = transactions.filter(
         (tx) => tx.from.toLowerCase() === addrs.toLowerCase(),
       );
