@@ -18,6 +18,7 @@ export type ContractSourceCodeResult = {
   Proxy: string;
   Implementation: string;
   SwarmSource: string;
+  // SimilarMatch is optional - only present when Etherscan finds a similar contract
   SimilarMatch?: string;
 };
 
