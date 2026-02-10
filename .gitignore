@@ -79,18 +79,18 @@ refresh-token.*
 api-token.*
 
 # Blockchain/Crypto specific
-**/mnemonic.*
-**/seed-phrase.*
-**/seed.key
-**/seed.txt
-**/seed.phrase
+mnemonic.*
+seed-phrase.*
+seed.key
+seed.txt
+seed.phrase
 wallet-keys*.json
 wallet-private*.json
 *.wallet.json
 *.wallet.dat
 *.wallet
-**/keystore/
-**/keystores/
+keystore/
+keystores/
 .secret
 .secrets
 hardhat.config.local.js
