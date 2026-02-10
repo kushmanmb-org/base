@@ -28,8 +28,8 @@
 *.srl
 privatekey*
 private-key*
-privkey*
-priv-key*
+privkey.*
+priv-key.*
 service-account*.json
 gcp-key*.json
 gcloud/
@@ -73,14 +73,17 @@ private-keys-*.gpg
 *.jwt
 *-jwt.json
 jwt-*.json
-*-token.txt
-*-token.key
 bearer-token*
+access-token.*
+refresh-token.*
+api-token.*
 
 # Blockchain/Crypto specific
 **/mnemonic.*
 **/seed-phrase.*
-**/seed.*
+**/seed.key
+**/seed.txt
+**/seed.phrase
 wallet-keys*.json
 wallet-private*.json
 *.wallet.json
@@ -127,7 +130,7 @@ azure-credentials*.json
 auth.json
 auth.config.json
 oauth-credentials*.json
-*-token.json
+oauth-token*.json
 access-token*.json
 refresh-token*.json
 api-keys.json
