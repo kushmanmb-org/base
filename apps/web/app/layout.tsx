@@ -179,18 +179,24 @@ const interTight = Inter_Tight({
   variable: '--font-inter-tight',
   weight: ['400'],
   subsets: ['latin'],
+  display: 'swap',
+  fallback: ['Arial', 'sans-serif'],
 });
 
 const inter = Inter({
   variable: '--font-inter',
   weight: ['400'],
   subsets: ['latin'],
+  display: 'swap',
+  fallback: ['Arial', 'sans-serif'],
 });
 
 const robotoMono = Roboto_Mono({
   variable: '--font-roboto-mono',
   weight: ['400'],
   subsets: ['latin'],
+  display: 'swap',
+  fallback: ['Courier New', 'monospace'],
 });
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

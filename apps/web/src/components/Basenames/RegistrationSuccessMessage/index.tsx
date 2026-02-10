@@ -23,21 +23,25 @@ export default function RegistrationSuccessMessage() {
 
   const claimUSDC = useCallback(() => {
     setPopupMessage('USDC is being sent to your wallet');
-    fetch(`${process.env.NEXT_PUBLIC_USDC_URL}?address=${address}`, {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
-    })
-      .then(async (response) => {
+    // Handle async operation with void to acknowledge we're intentionally not awaiting
+    void (async () => {
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_USDC_URL}?address=${address}`, {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+        });
+
         if (!response.ok) {
           const resp = (await response.json()) as { error: string };
           throw new Error(resp.error);
         }
         setPopupMessage('USDC claimed successfully!');
-      })
-      .catch((error) => {
-        setPopupMessage(`${error.message}`);
-        console.error('Error:', error);
-      });
+      } catch (error) {
+        // Use a generic error message to avoid exposing sensitive API error details
+        setPopupMessage('An unexpected error occurred while claiming USDC');
+        // Error details logged internally, not exposing sensitive data
+      }
+    })();
   }, [address]);
 
   const closePopup = useCallback(() => setPopupMessage(null), []);
