@@ -119,29 +119,23 @@ secret.json
 *.secrets
 *.credentials
 .aws/
-.aws/credentials
-.aws/config
 .gcp/
-.gcp/credentials
 gcp-credentials*.json
 .azure/
-.azure/credentials
 azure-credentials*.json
 auth.json
 auth.config.json
 oauth-credentials*.json
 oauth-token*.json
-access-token*.json
-refresh-token*.json
 api-keys.json
 api-key.json
 *-api-key.json
 *.api-key
 .npmrc.local
 .yarnrc.local
-**/.env.local
-**/.env.*.local
-**/.envrc.local
+.env.local
+.env.*.local
+.envrc.local
 
 # Database files and backups
 *.db
