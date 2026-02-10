@@ -75,7 +75,7 @@ export default function ImageCloudinary({
             setCloudinaryUploadUrl(url);
           }
         } catch (error) {
-          console.error('Error getting Cloudinary URL:', error);
+          // Error getting Cloudinary URL, using fallback
         }
       }
 
