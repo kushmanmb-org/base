@@ -34,10 +34,16 @@ gcp-key*.json
 keystore.json
 
 # Blockchain/Crypto specific
-mnemonic*
-seed-phrase*
-wallet*.json
-wallet*.dat
+mnemonic.txt
+mnemonic.json
+**/mnemonic.*
+seed-phrase.txt
+seed-phrase.json
+**/seed-phrase.*
+wallet-keys*.json
+wallet-private*.json
+*.wallet.json
+*.wallet.dat
 keystore/
 .secret
 hardhat.config.local.js
@@ -45,7 +51,8 @@ hardhat.config.local.ts
 truffle-config.local.js
 foundry.toml.local
 *.wallet
-account*.json
+account-keys*.json
+private-account*.json
 
 # Credentials and secrets
 credentials.json
@@ -58,8 +65,9 @@ secret.json
 .azure/credentials
 auth.json
 auth.config.json
-oauth*.json
-token*.json
+oauth-credentials*.json
+*-token.json
+access-token*.json
 api-keys.json
 .npmrc.local
 .yarnrc.local
@@ -105,6 +113,12 @@ override.tf.json
 *-secret.yml
 secrets.yaml
 secrets.yml
+!example-secret.yaml
+!example-secret.yml
+!template-secret.yaml
+!template-secret.yml
+!*-secret.example.yaml
+!*-secret.example.yml
 # IDE and editor files
 .vscode/
 .idea/
