@@ -137,19 +137,20 @@ export default function UsernameProfileSectionHeatmap() {
       const firstTransactionDate = new Date(Math.min(...timestamps) * 1000);
       const lastTransactionDate = new Date(Math.max(...timestamps) * 1000);
 
-      // Optimize: use mathematical operations to normalize timestamps to day boundaries
-      // This avoids creating Date objects during Set construction
-      const uniqueActiveDaysSet = new Set<number>();
-      const msPerDay = 86400000; // 24 * 60 * 60 * 1000
+      // Optimize: avoid creating Date objects twice
+      // Store the first occurrence of each unique day's Date object
+      const uniqueDatesMap = new Map<string, Date>();
       filteredTransactions.forEach((tx) => {
         const timestamp = parseInt(tx.timeStamp, 10) * 1000;
-        // Normalize to UTC day start (00:00:00) using math instead of Date operations
-        const dayStart = Math.floor(timestamp / msPerDay) * msPerDay;
-        uniqueActiveDaysSet.add(dayStart);
+        const date = new Date(timestamp);
+        const dateStr = date.toDateString();
+        if (!uniqueDatesMap.has(dateStr)) {
+          uniqueDatesMap.set(dateStr, date);
+        }
       });
 
-      const sortedDates = Array.from(uniqueActiveDaysSet)
-        .map((timestamp) => new Date(timestamp))
+      // Use the cached Date objects directly instead of recreating them
+      const sortedDates = Array.from(uniqueDatesMap.values())
         .sort((a, b) => a.getTime() - b.getTime());
 
       let longestStreakDays = 0;
@@ -168,7 +169,7 @@ export default function UsernameProfileSectionHeatmap() {
       longestStreakDays = Math.max(longestStreakDays, streak);
 
       return {
-        uniqueActiveDays: uniqueActiveDaysSet.size,
+        uniqueActiveDays: uniqueDatesMap.size,
         longestStreakDays,
         currentStreakDays:
           sortedDates[sortedDates.length - 1].toDateString() === new Date().toDateString()
