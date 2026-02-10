@@ -9,11 +9,10 @@ type ConnectWalletBody = {
 export async function POST(request: NextRequest) {
   try {
     const body = (await request.json()) as ConnectWalletBody;
-    let { username, walletAddress } = body;
 
     // Trim whitespace from username and walletAddress
-    username = typeof username === 'string' ? username.trim() : '';
-    walletAddress = typeof walletAddress === 'string' ? walletAddress.trim() : '';
+    const username = typeof body.username === 'string' ? body.username.trim() : '';
+    const walletAddress = typeof body.walletAddress === 'string' ? body.walletAddress.trim() : '';
 
     // Validate required fields
     if (!username || !walletAddress) {
@@ -49,7 +48,10 @@ export async function POST(request: NextRequest) {
 
     // For now, we'll just simulate a successful connection
     // This is a placeholder implementation
-    console.log('Wallet connection attempt:', { username, walletAddress });
+    console.log('Wallet connection attempt:', { 
+      username: username.substring(0, 3) + '***', 
+      walletAddress: walletAddress.substring(0, 6) + '...' + walletAddress.substring(38),
+    });
 
     return NextResponse.json(
       {
