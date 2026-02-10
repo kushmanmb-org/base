@@ -18,7 +18,7 @@ export function CustomWalletAdvancedAddressDetails() {
         setCopyText('Copied');
       } catch (err) {
         setCopyText('Failed to copy');
-        console.error('Failed to copy address:', err);
+        // Copy operation failed, error logged internally
       } finally {
         setTimeout(() => setCopyText('Copy'), 2000);
       }

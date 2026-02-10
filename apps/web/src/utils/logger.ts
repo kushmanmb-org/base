@@ -67,7 +67,8 @@ class CustomLogger {
             try {
               await bugsnagNotify(message, (e) => e.addMetadata('baseweb', { meta }));
             } catch (e) {
-              console.error('Error reporting to Bugsnag', e);
+              // Bugsnag reporting failed, suppress to avoid leaking error details
+              console.error('Error reporting to Bugsnag failed');
             }
           })();
         }

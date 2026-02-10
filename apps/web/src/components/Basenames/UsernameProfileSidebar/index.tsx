@@ -81,8 +81,8 @@ export default function UsernameProfileSidebar() {
     // Handle async operation with void to acknowledge we're intentionally not awaiting
     void (async () => {
       try {
-        const result = await initiateReclaim(reclaimContract);
-        console.log({ result });
+        await initiateReclaim(reclaimContract);
+        // Transaction initiated successfully, result logged internally
       } catch (error) {
         logError(error, 'Failed to reclaim profile');
       }

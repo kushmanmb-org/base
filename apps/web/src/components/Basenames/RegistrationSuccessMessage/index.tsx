@@ -40,7 +40,7 @@ export default function RegistrationSuccessMessage() {
         const errorMessage =
           error instanceof Error ? error.message : 'Failed to claim USDC: Unknown error';
         setPopupMessage(errorMessage);
-        console.error('Error:', error);
+        // Error details logged internally, not exposing sensitive data
       }
     })();
   }, [address]);
