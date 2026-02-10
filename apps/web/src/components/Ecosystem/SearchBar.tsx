@@ -77,7 +77,6 @@ export function SearchBar({
 
       const value = e.target.value;
       setLocalSearch(value); // Update local state immediately for responsive input
-      
       // Debounce the parent state update with 300ms delay
       debounced.current = setTimeout(() => {
         setSearch(value);
