@@ -53,7 +53,7 @@ export function SearchBar({
 }) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [localSearch, setLocalSearch] = useState(search);
-  const debounced = useRef<number>();
+  const debounced = useRef<ReturnType<typeof setTimeout>>();
   const inputRef = useRef<HTMLInputElement>(null);
   const mobileInputRef = useRef<HTMLInputElement>(null);
 
