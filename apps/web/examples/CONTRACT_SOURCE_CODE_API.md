@@ -88,7 +88,7 @@ async function getContractSource(address: string) {
 
 ## Test Contract Example
 
-The implementation was tested with the Test12345 contract from the problem statement:
+The implementation was tested with the Test12345 contract from the problem statement (available in `Test12345.sol`):
 
 ```solidity
 pragma solidity 0.4.26;
@@ -96,7 +96,7 @@ pragma solidity 0.4.26;
 contract Test12345 {
     string public test;
     
-    function enterValue(string _c) {
+    function enterValue(string memory _c) public {
         test = _c;
     }
 }
