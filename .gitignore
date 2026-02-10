@@ -4,11 +4,7 @@
 !.env.example
 !.env.sample
 !.env.template
-.env.local
 .env.*.local
-.env.development.local
-.env.test.local
-.env.production.local
 .envrc
 .envrc.local
 
@@ -34,17 +30,13 @@ gcp-key*.json
 keystore.json
 
 # Blockchain/Crypto specific
-mnemonic.txt
-mnemonic.json
 **/mnemonic.*
-seed-phrase.txt
-seed-phrase.json
 **/seed-phrase.*
 wallet-keys*.json
 wallet-private*.json
 *.wallet.json
 *.wallet.dat
-keystore/
+**/keystore/
 .secret
 hardhat.config.local.js
 hardhat.config.local.ts
