@@ -90,10 +90,7 @@ wallet-private*.json
 *.wallet.json
 *.wallet.dat
 *.wallet
-keystore/
-keystores/
-.secret
-.secrets
+keystore*/
 hardhat.config.local.js
 hardhat.config.local.ts
 truffle-config.local.js
