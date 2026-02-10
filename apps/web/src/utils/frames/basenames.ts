@@ -11,7 +11,7 @@ export enum RawErrorStrings {
   InvalidUnderscore = 'underscore allowed only at start',
 }
 
-export async function getTransactionStatus(chain: Chain, transactionId: string) {
+export async function getTransactionStatus(chain: Chain, transactionId: `0x${string}`) {
   const client = createPublicClient({
     chain: chain,
     transport: http(),

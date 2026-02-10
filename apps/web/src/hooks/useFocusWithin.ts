@@ -14,7 +14,7 @@ function containsRelatedTarget(event: FocusEvent) {
   return false;
 }
 
-export function useFocusWithin<T extends HTMLElement = unknown>({
+export function useFocusWithin<T extends HTMLElement = HTMLElement>({
   onBlur,
   onFocus,
 }: UseFocusWithinOptions = {}): { ref: React.MutableRefObject<T>; focused: boolean } {

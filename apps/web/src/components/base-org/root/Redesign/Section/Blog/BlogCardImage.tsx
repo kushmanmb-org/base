@@ -82,7 +82,7 @@ export function BlogCardImage({
           <WebGLView
             fragmentShader={interactiveCardFragmentShader}
             customUniforms={customUniforms}
-            borderRadiusCorners={[8, 8, 0, 0] as const}
+            borderRadiusCorners={[8, 8, 0, 0]}
           />
         ) : (
           <NextImage

@@ -103,7 +103,7 @@ export function CardScene({
   useRgbTexture = false,
   className,
   stretchZ,
-  modelRotation = [-0.6, -0.6, 0] as const,
+  modelRotation = [-0.6, -0.6, 0],
   patternTexture = '/models/upd/pat-cards.png',
 }: {
   gltfSrc?: string;
@@ -309,7 +309,7 @@ export function CardScene({
         fragmentShader={DEBUG ? debugFragmentShader : fragmentShader}
         customUniforms={customUniforms}
         onResize={handleResize}
-        borderRadiusCorners={[8, 8, 8, 8] as const}
+        borderRadiusCorners={[8, 8, 8, 8]}
       />
 
       <WebGlTunnelIn>
