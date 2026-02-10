@@ -137,13 +137,15 @@ export default function UsernameProfileSectionHeatmap() {
       const firstTransactionDate = new Date(Math.min(...timestamps) * 1000);
       const lastTransactionDate = new Date(Math.max(...timestamps) * 1000);
 
-      // Optimize: create Date objects only once during Set construction
+      // Optimize: use mathematical operations to normalize timestamps to day boundaries
+      // This avoids creating Date objects during Set construction
       const uniqueActiveDaysSet = new Set<number>();
+      const msPerDay = 86400000; // 24 * 60 * 60 * 1000
       filteredTransactions.forEach((tx) => {
         const timestamp = parseInt(tx.timeStamp, 10) * 1000;
-        const dateStart = new Date(timestamp);
-        dateStart.setHours(0, 0, 0, 0);
-        uniqueActiveDaysSet.add(dateStart.getTime());
+        // Normalize to UTC day start (00:00:00) using math instead of Date operations
+        const dayStart = Math.floor(timestamp / msPerDay) * msPerDay;
+        uniqueActiveDaysSet.add(dayStart);
       });
 
       const sortedDates = Array.from(uniqueActiveDaysSet)

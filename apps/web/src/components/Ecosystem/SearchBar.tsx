@@ -64,6 +64,13 @@ export function SearchBar({
     }
   }, [search]);
 
+  // Cleanup timeout on unmount to prevent setState on unmounted component
+  useEffect(() => {
+    return () => {
+      clearTimeout(debounced.current);
+    };
+  }, []);
+
   const onChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       clearTimeout(debounced.current);
