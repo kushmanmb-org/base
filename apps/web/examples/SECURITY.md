@@ -23,9 +23,11 @@ The following sensitive file patterns are automatically excluded:
 - `**/mnemonic.*`, `**/seed-phrase.*`
 - `wallet-keys*.json`, `wallet-private*.json`
 - `*.wallet.json`, `*.wallet.dat`, `*.wallet`
-- `**/keystore/`, `*.keystore`, `keystore.json`
+- `**/keystore/`, `**/keystores/`, `*.keystore`, `keystore.json`
 - `account-keys*.json`, `private-account*.json`
-- `.secret`
+- `**/accounts.json`, `**/wallets.json`
+- `.secret`, `**/.secret-*`, `**/.secrets/`
+- `deployment-keys*.json`, `signer-keys*.json`
 
 #### Development Environment Files
 - `.env`, `.env.*`, `.env.*.local` (except `.env.example`)
@@ -35,9 +37,32 @@ The following sensitive file patterns are automatically excluded:
 
 #### API Keys & Credentials
 - `credentials.json`, `secrets.json`, `secret.json`
-- `api-keys.json`, `*-token.json`, `access-token*.json`
-- `oauth-credentials*.json`, `auth.json`
+- `*.secret`, `*.secrets`, `*.credentials`
+- `api-keys.json`, `api-secrets.json`
+- `*-token.json`, `*-tokens.json`, `access-token*.json`
+- `oauth-credentials*.json`, `auth.json`, `auth.config.json`
 - `service-account*.json`, `gcp-key*.json`
+- `.netrc`, `.git-credentials`
+- `**/config/secrets.yml`, `**/config/credentials.yml`, `**/config/master.key`
+- `jwt-secret*.txt`, `session-secret*.txt`
+
+#### Database & Data Files
+- Database files: `*.db`, `*.sqlite`, `*.sql`, `*.dump`, `*.backup`
+- Database directories: `**/db/backups/`, `pgdata/`, `postgres-data/`
+- Data files: `*.dat`, `*.data`, `data/`
+- Private data directories: `private-data/`, `sensitive-data/`, `user-data/`
+- Backups and exports: `**/backups/`, `**/exports/`
+
+#### CI/CD & Deployment
+- CI configuration: `.circleci/local.yml`, `.travis.local.yml`, `gitlab-ci.local.yml`
+- Deploy keys: `**/.deploy-keys/`, `deploy-key*`, `deployment-config.local.*`
+- Ansible vault: `ansible-vault-password*.txt`, `vault-password*.txt`, `**/ansible/vault-pass`
+- Docker secrets: `secrets/`, `.docker/secrets/`, `docker-secrets/`
+
+#### Test Data
+- Private test data: `**/test-data/private/`, `**/fixtures/private/`
+- Test credentials: `test-keys*.json`, `test-credentials*.json`, `mock-private-keys*.json`
+- Note: Files matching `*.example.*` patterns are allowed for documentation purposes
 
 ## 🛡️ Smart Contract Security Best Practices
 
