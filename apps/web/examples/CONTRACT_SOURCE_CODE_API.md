@@ -88,23 +88,66 @@ async function getContractSource(address: string) {
 
 ## Test Contract Example
 
-The implementation was tested with the Test12345 contract from the problem statement (available in `Test12345.sol`):
+The implementation was tested with the Test12345 contract (available in `Test12345.sol`). The contract demonstrates best practices including:
+
+- SPDX license identifier
+- Owner-based access control
+- Event emission for state changes
+- Input validation
+- Ownership transfer functionality
 
 ```solidity
-pragma solidity 0.4.26;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.4.18;
 
 contract Test12345 {
+    address public owner;
     string public test;
     
-    function enterValue(string memory _c) public {
+    event ValueUpdated(string newValue, address indexed updatedBy);
+    
+    function Test12345() public {
+        owner = msg.sender;
+    }
+    
+    modifier onlyOwner() {
+        require(msg.sender == owner, "Only owner can call this function");
+        _;
+    }
+    
+    function enterValue(string _c) public onlyOwner {
+        require(bytes(_c).length > 0, "Value cannot be empty");
+        require(bytes(_c).length <= 256, "Value too long");
         test = _c;
+        emit ValueUpdated(_c, msg.sender);
+    }
+    
+    function transferOwnership(address newOwner) public onlyOwner {
+        require(newOwner != address(0), "Invalid address");
+        owner = newOwner;
     }
 }
 ```
 
 ## Environment Variables
 
+⚠️ **Security Note:** Never commit API keys or private keys to version control. Always use environment variables.
+
 The API requires the `ETHERSCAN_API_KEY` environment variable to be set. This key is used for both Etherscan and Basescan API calls.
+
+### Setup
+
+1. Copy the example environment file:
+   ```bash
+   cp apps/web/.env.local.example apps/web/.env.local
+   ```
+
+2. Add your API key to `.env.local`:
+   ```bash
+   ETHERSCAN_API_KEY=your_api_key_here
+   ```
+
+3. The `.env.local` file is already included in `.gitignore` and will not be committed.
 
 ## Type Safety
 

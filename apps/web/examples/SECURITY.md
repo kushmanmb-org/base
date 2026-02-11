@@ -1,0 +1,265 @@
+# Security Best Practices for Smart Contract Development
+
+## Overview
+
+This document outlines security best practices for developing, testing, and deploying smart contracts in this repository.
+
+## 🔐 Private Keys and Sensitive Data Protection
+
+### Never Commit Private Keys
+
+**CRITICAL:** Never commit private keys, mnemonics, seed phrases, or any sensitive credentials to version control.
+
+### Protected by .gitignore
+
+The following sensitive file patterns are automatically excluded:
+
+#### Private Keys & Certificates
+- `*.pem`, `*.key`, `*.p8`, `*.p12`, `*.pfx`
+- `*.id_rsa`, `*.id_ed25519`, `*.id_ecdsa`, `*.ppk`
+- `privatekey*`, `private-key*`
+
+#### Blockchain & Crypto Specific
+- `**/mnemonic.*`, `**/seed-phrase.*`
+- `wallet-keys*.json`, `wallet-private*.json`
+- `*.wallet.json`, `*.wallet.dat`, `*.wallet`
+- `**/keystore/`, `*.keystore`, `keystore.json`
+- `account-keys*.json`, `private-account*.json`
+- `.secret`
+
+#### Development Environment Files
+- `.env`, `.env.*`, `.env.*.local` (except `.env.example`)
+- `hardhat.config.local.js`, `hardhat.config.local.ts`
+- `truffle-config.local.js`
+- `foundry.toml.local`
+
+#### API Keys & Credentials
+- `credentials.json`, `secrets.json`, `secret.json`
+- `api-keys.json`, `*-token.json`, `access-token*.json`
+- `oauth-credentials*.json`, `auth.json`
+- `service-account*.json`, `gcp-key*.json`
+
+## 🛡️ Smart Contract Security Best Practices
+
+### 1. Use Latest Stable Solidity Version
+
+```solidity
+// Prefer latest stable version with security features
+pragma solidity ^0.8.0;
+
+// If using older versions, document why
+// ONLY use ^0.4.18 if required for compatibility
+```
+
+### 2. SPDX License Identifier
+
+Always include an SPDX license identifier at the top of your contract:
+
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+```
+
+### 3. Access Control
+
+Implement proper access control for sensitive functions:
+
+```solidity
+address public owner;
+
+modifier onlyOwner() {
+    require(msg.sender == owner, "Only owner can call this");
+    _;
+}
+
+function criticalFunction() public onlyOwner {
+    // Protected code
+}
+```
+
+### 4. Input Validation
+
+Always validate inputs to prevent unexpected behavior:
+
+```solidity
+function setValue(string _value) public {
+    require(bytes(_value).length > 0, "Value cannot be empty");
+    require(bytes(_value).length <= 256, "Value too long");
+    // Process value
+}
+```
+
+### 5. Event Emission
+
+Emit events for all state changes for transparency and monitoring:
+
+```solidity
+event ValueUpdated(string newValue, address indexed updatedBy);
+
+function setValue(string _value) public {
+    value = _value;
+    emit ValueUpdated(_value, msg.sender);
+}
+```
+
+### 6. Reentrancy Protection
+
+For functions that make external calls, use reentrancy guards:
+
+```solidity
+bool private locked;
+
+modifier nonReentrant() {
+    require(!locked, "No reentrancy");
+    locked = true;
+    _;
+    locked = false;
+}
+```
+
+### 7. Integer Overflow/Underflow
+
+For Solidity < 0.8.0, use SafeMath library. Solidity 0.8.0+ has built-in checks.
+
+### 8. Gas Optimization
+
+- Use `constant` and `immutable` keywords where appropriate
+- Pack storage variables efficiently
+- Avoid unbounded loops
+- Consider gas costs for string operations
+
+## 🔍 Pre-Deployment Checklist
+
+Before deploying any smart contract:
+
+- [ ] All tests pass
+- [ ] Code reviewed by at least one other developer
+- [ ] Security audit completed (for production contracts)
+- [ ] All access controls properly implemented
+- [ ] Events emitted for all state changes
+- [ ] Input validation on all public/external functions
+- [ ] Gas optimization reviewed
+- [ ] No hardcoded addresses or private keys
+- [ ] Deployment scripts reviewed
+- [ ] Documentation updated
+
+## 🌐 Environment Variables
+
+### Required API Keys
+
+Store API keys in `.env.local` (never commit this file):
+
+```bash
+# Blockchain explorers
+ETHERSCAN_API_KEY=your_etherscan_key_here
+BASESCAN_API_KEY=your_basescan_key_here
+
+# For development only - NEVER use real mnemonics
+FARCASTER_DEVELOPER_MNEMONIC=test test test test test test test test test test test junk
+
+# Other services
+ALCHEMY_API_KEY=your_alchemy_key
+WALLET_CONNECT_PROJECT_ID=your_project_id
+```
+
+### Creating .env.local
+
+Copy from the example file:
+
+```bash
+cp apps/web/.env.local.example apps/web/.env.local
+```
+
+Then edit with your actual keys (never commit the .env.local file).
+
+## 🚨 Incident Response
+
+If sensitive data is accidentally committed:
+
+1. **DO NOT** just delete the file and commit
+2. Rotate all exposed credentials immediately
+3. Use `git filter-branch` or BFG Repo-Cleaner to remove from history
+4. Force push after cleaning (coordinate with team)
+5. Notify security team
+6. Review access logs for any unauthorized usage
+
+### Quick Fix (Not Recommended for Sensitive Data)
+
+```bash
+# Remove file from tracking
+git rm --cached sensitive-file.key
+
+# Add to .gitignore
+echo "sensitive-file.key" >> .gitignore
+
+# Commit
+git add .gitignore
+git commit -m "Remove sensitive file from tracking"
+
+# IMPORTANT: Still visible in history!
+```
+
+### Proper Cleanup
+
+```bash
+# Install BFG Repo-Cleaner
+brew install bfg  # or download from https://rtyley.github.io/bfg-repo-cleaner/
+
+# Remove sensitive file from all history
+bfg --delete-files sensitive-file.key
+
+# Clean up
+git reflog expire --expire=now --all
+git gc --prune=now --aggressive
+
+# Force push (DANGEROUS - coordinate with team)
+git push --force
+```
+
+## 📚 Additional Resources
+
+- [Solidity Security Considerations](https://docs.soliditylang.org/en/latest/security-considerations.html)
+- [Smart Contract Best Practices](https://consensys.github.io/smart-contract-best-practices/)
+- [OpenZeppelin Contracts](https://docs.openzeppelin.com/contracts/)
+- [Ethereum Smart Contract Security Best Practices](https://consensys.net/diligence/blog/)
+- [SWC Registry - Smart Contract Weakness Classification](https://swcregistry.io/)
+
+## 🔗 Tools
+
+### Static Analysis
+- [Slither](https://github.com/crytic/slither) - Static analyzer
+- [Mythril](https://github.com/ConsenSys/mythril) - Security analysis tool
+- [Securify](https://securify.chainsecurity.com/) - Online security scanner
+
+### Testing
+- [Hardhat](https://hardhat.org/) - Development environment
+- [Foundry](https://book.getfoundry.sh/) - Fast development framework
+- [Truffle](https://trufflesuite.com/) - Development suite
+
+### Auditing
+- [Trail of Bits](https://www.trailofbits.com/)
+- [OpenZeppelin](https://www.openzeppelin.com/security-audits)
+- [ConsenSys Diligence](https://consensys.net/diligence/)
+
+## 📝 Reporting Security Issues
+
+If you discover a security vulnerability:
+
+1. **DO NOT** create a public GitHub issue
+2. Email security@[domain].com with details
+3. Allow time for the issue to be addressed
+4. Follow responsible disclosure practices
+
+## ✅ Summary
+
+**Remember:**
+- 🔒 Never commit private keys or secrets
+- 📋 Use .env.local for sensitive configuration
+- ✨ Follow smart contract best practices
+- 🔍 Review code before deployment
+- 📢 Emit events for transparency
+- 🛡️ Implement access controls
+- ✅ Validate all inputs
+- 🧪 Test thoroughly
+
+**When in doubt, ask for a security review!**
