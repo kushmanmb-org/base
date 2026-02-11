@@ -129,7 +129,7 @@ contract Test12345 {
         require(bytes(_c).length > 0, "Value cannot be empty");
         require(bytes(_c).length <= 256, "Value too long");
         test = _c;
-        emit ValueUpdated(keccak256(_c), msg.sender);
+        emit ValueUpdated(keccak256(bytes(_c)), msg.sender);
     }
     
     // Two-step ownership transfer for safety

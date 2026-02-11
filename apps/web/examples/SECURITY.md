@@ -43,13 +43,25 @@ The following sensitive file patterns are automatically excluded:
 
 ### 1. Use Latest Stable Solidity Version
 
-```solidity
-// Prefer latest stable version with security features
-pragma solidity ^0.8.0;
+For new projects, prefer the latest stable version with built-in security features:
 
-// If using older versions, document why
-// ONLY use ^0.4.18 if required for compatibility
+```solidity
+// Recommended for new projects
+pragma solidity ^0.8.0;
 ```
+
+For legacy or compatibility requirements, document the reason:
+
+```solidity
+// ONLY use older versions when required for compatibility
+// Example: Integration with existing 0.4.x contracts
+pragma solidity ^0.4.18;
+```
+
+**Note:** This repository's Test12345.sol uses ^0.4.18 for demonstration purposes and compatibility with legacy systems. For production smart contracts, always prefer Solidity 0.8.x or later which includes:
+- Built-in overflow/underflow protection
+- Better error handling with custom errors
+- Improved security features
 
 ### 2. SPDX License Identifier
 
@@ -112,7 +124,8 @@ event ValueUpdated(bytes32 indexed valueHash, address indexed updatedBy);
 function setValue(string _value) public {
     value = _value;
     // Emit hash for privacy - blockchain data is public and permanent
-    emit ValueUpdated(keccak256(_value), msg.sender);
+    // Note: In Solidity 0.4.x, use keccak256(bytes(_value))
+    emit ValueUpdated(keccak256(bytes(_value)), msg.sender);
 }
 ```
 
