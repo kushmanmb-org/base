@@ -257,9 +257,6 @@ pids/
 # Optional npm cache directory
 .npm/
 
-# Optional eslint cache
-.eslintcache
-
 # Optional stylelint cache
 .stylelintcache
 
@@ -274,16 +271,6 @@ pids/
 .env.test.local
 .env.production.local
 .env.local
-
-# Turborepo cache
-.turbo/
-
-# Vercel
-.vercel/
-
-# TypeScript cache
-*.tsbuildinfo
-.tsbuildinfo
 
 # Optional Nx cache
 .nx/cache/
