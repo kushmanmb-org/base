@@ -111,7 +111,7 @@ All workflows follow a consistent structure:
 - **Purpose:** Performs comprehensive security analysis using CodeQL
 - **Triggers:** Push, pull requests, weekly schedule, and manual dispatch
 - **Timeout:** 30 minutes
-- **Features:** Security-extended queries, automated vulnerability detection
+- **Features:** Uses security-and-quality queries, automated vulnerability detection
 
 ## Guidelines for Creating New Workflows
 
