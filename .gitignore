@@ -105,9 +105,11 @@ data/
 *.tsv
 *.json.gz
 *.tar.gz
-private-data/
-sensitive-data/
-user-data/
+**/private-data/
+**/sensitive-data/
+**/user-data/
+**/private/
+**/confidential/
 **/exports/
 **/backups/
 
@@ -115,7 +117,7 @@ user-data/
 docker-compose.override.yml
 docker-compose.local.yml
 .dockerignore.local
-secrets/
+**/secrets/
 .docker/secrets/
 docker-secrets/
 
@@ -148,7 +150,9 @@ secrets.yml
 .travis.local.yml
 gitlab-ci.local.yml
 **/.deploy-keys/
-deploy-key*
+deploy-key*.pem
+deploy-key*.key
+deploy-key*.json
 deployment-config.local.*
 ansible-vault-password*.txt
 vault-password*.txt

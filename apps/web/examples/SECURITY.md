@@ -50,14 +50,14 @@ The following sensitive file patterns are automatically excluded:
 - Database files: `*.db`, `*.sqlite`, `*.sql`, `*.dump`, `*.backup`
 - Database directories: `**/db/backups/`, `pgdata/`, `postgres-data/`
 - Data files: `*.dat`, `*.data`, `data/`
-- Private data directories: `private-data/`, `sensitive-data/`, `user-data/`
+- Private data directories: `**/private-data/`, `**/sensitive-data/`, `**/user-data/`, `**/private/`, `**/confidential/`
 - Backups and exports: `**/backups/`, `**/exports/`
 
 #### CI/CD & Deployment
 - CI configuration: `.circleci/local.yml`, `.travis.local.yml`, `gitlab-ci.local.yml`
-- Deploy keys: `**/.deploy-keys/`, `deploy-key*`, `deployment-config.local.*`
+- Deploy keys: `**/.deploy-keys/`, `deploy-key*.pem`, `deploy-key*.key`, `deploy-key*.json`, `deployment-config.local.*`
 - Ansible vault: `ansible-vault-password*.txt`, `vault-password*.txt`, `**/ansible/vault-pass`
-- Docker secrets: `secrets/`, `.docker/secrets/`, `docker-secrets/`
+- Docker secrets: `**/secrets/`, `.docker/secrets/`, `docker-secrets/`
 
 #### Test Data
 - Private test data: `**/test-data/private/`, `**/fixtures/private/`
