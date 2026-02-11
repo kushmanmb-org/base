@@ -17,7 +17,8 @@ The following sensitive file patterns are automatically excluded:
 #### Private Keys & Certificates
 - `*.pem`, `*.key`, `*.p8`, `*.p12`, `*.pfx`
 - `*.id_rsa`, `*.id_ed25519`, `*.id_ecdsa`, `*.ppk`
-- `id_rsa*`, `id_ed25519*`, `id_ecdsa*` - SSH key variations
+- `id_rsa`, `id_rsa.pub`, `id_ed25519`, `id_ed25519.pub`, `id_ecdsa`, `id_ecdsa.pub` - Specific SSH key files
+- `**/.ssh/id_*` - SSH keys in .ssh directories
 - `privatekey*`, `private-key*`
 - `*.gpg`, `*.asc`, `*.sig` - GPG keys and signatures
 - `*.jks`, `*.truststore`, `truststore.json` - Java keystores
@@ -52,9 +53,9 @@ The following sensitive file patterns are automatically excluded:
 - `.netrc`, `.git-credentials`
 - `**/config/secrets.yml`, `**/config/credentials.yml`, `**/config/master.key`
 - `jwt-secret*.txt`, `session-secret*.txt`
-- `passwords.txt`, `password*.txt`, `**/passwords/` - Password files and directories
+- `passwords.txt`, `my-password*.txt`, `password-list*.txt`, `**/passwords/` - Password files (specific patterns to avoid false positives)
 - `.aws/credentials`, `.aws/config.local` - AWS credentials
-- `.gcp/credentials`, `.gcloud/` - GCP credentials
+- `.gcp/credentials`, `**/.gcloud/` - GCP credentials
 - `.azure/credentials`, `.azure/config` - Azure credentials
 
 #### Database & Data Files
@@ -69,7 +70,7 @@ The following sensitive file patterns are automatically excluded:
 - CI configuration: `.circleci/local.yml`, `.travis.local.yml`, `gitlab-ci.local.yml`
 - Deploy keys: `**/.deploy-keys/`, `deploy-key*.pem`, `deploy-key*.key`, `deploy-key*.json`, `deployment-config.local.*`
 - Ansible vault: `ansible-vault-password*.txt`, `vault-password*.txt`, `**/ansible/vault-pass`
-- Docker secrets: `**/secrets/`, `.docker/secrets/`, `docker-secrets/`
+- Docker secrets: `**/secrets/` (covers all secret directories including `.docker/secrets/`, `docker-secrets/`)
 
 #### Test Data
 - Private test data: `**/test-data/private/`, `**/fixtures/private/`

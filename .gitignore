@@ -24,9 +24,13 @@
 *.csr
 privatekey*
 private-key*
-id_rsa*
-id_ed25519*
-id_ecdsa*
+id_rsa
+id_rsa.pub
+id_ed25519
+id_ed25519.pub
+id_ecdsa
+id_ecdsa.pub
+**/.ssh/id_*
 service-account*.json
 gcp-key*.json
 *.keystore
@@ -78,7 +82,7 @@ secret.json
 .aws/credentials
 .aws/config.local
 .gcp/credentials
-.gcloud/
+**/.gcloud/
 .azure/credentials
 .azure/config
 auth.json
@@ -99,7 +103,8 @@ api-secrets.json
 jwt-secret*.txt
 session-secret*.txt
 passwords.txt
-password*.txt
+my-password*.txt
+password-list*.txt
 **/passwords/
 
 # Database files and backups
@@ -142,8 +147,6 @@ docker-compose.override.yml
 docker-compose.local.yml
 .dockerignore.local
 **/secrets/
-.docker/secrets/
-docker-secrets/
 
 # Terraform/Infrastructure
 *.tfvars
