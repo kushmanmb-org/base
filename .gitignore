@@ -43,6 +43,26 @@ truststore.json
 *.sig
 known_hosts.local
 
+# Common secret/key file naming patterns (case variations)
+*PRIVATE_KEY*
+*SECRET_KEY*
+*API_KEY*
+*private_key*
+*secret_key*
+*api_key*
+PRIVATE_KEY*
+SECRET_KEY*
+API_KEY*
+private_key*
+secret_key*
+api_key*
+*-private-key*
+*-secret-key*
+*-api-key*
+*_private_key*
+*_secret_key*
+*_api_key*
+
 # Blockchain/Crypto specific
 **/mnemonic.*
 **/seed-phrase.*
