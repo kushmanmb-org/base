@@ -27,6 +27,7 @@ export function usePendingOwnerStatus() {
   });
 
   // Read the current owner from the contract
+  // Note: This is returned for display purposes in the UI (e.g., showing who the current owner is)
   const { data: currentOwner, isLoading: isOwnerLoading } = useReadContract({
     address: contractAddress,
     abi: UpgradeableRegistrarControllerAbi,

@@ -126,19 +126,16 @@ describe('useAcceptOwnership', () => {
     expect(result.current.transactionStatus).toBe(WriteTransactionWithReceiptStatus.Processing);
   });
 
-  it('should throw error when contract address is not found', async () => {
-    // Mock useBasenameChain to return a chain without a contract address
-    jest.mock('apps/web/src/hooks/useBasenameChain', () => ({
-      __esModule: true,
-      default: () => ({ basenameChain: { id: 99999 } }),
-    }));
-
-    mockInitiateTransaction.mockImplementation(() => {
-      throw new Error('Contract address not found for chain 99999');
-    });
+  it('should handle error when contract address is not found', async () => {
+    // When acceptOwnership is called with an invalid chain, it should throw
+    mockInitiateTransaction.mockRejectedValue(
+      new Error('Contract address not found for chain 99999')
+    );
 
     const { result } = renderHook(() => useAcceptOwnership());
 
-    await expect(result.current.acceptOwnership()).rejects.toThrow();
+    await expect(result.current.acceptOwnership()).rejects.toThrow(
+      'Contract address not found for chain 99999'
+    );
   });
 });

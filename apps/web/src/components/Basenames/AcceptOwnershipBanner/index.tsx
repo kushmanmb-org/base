@@ -51,7 +51,7 @@ export default function AcceptOwnershipBanner() {
             Pending Ownership Transfer
           </h3>
           <p className="mt-2 text-sm text-gray-600">
-            You have been designated as the pending owner of the Basename Registrar Controller.
+            You have been designated as the pending owner of the UpgradeableRegistrarController.
             Accept ownership to complete the transfer.
           </p>
         </div>
