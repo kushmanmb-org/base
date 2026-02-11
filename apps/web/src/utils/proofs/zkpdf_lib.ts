@@ -6,7 +6,7 @@
  * underlying document content.
  */
 
-export interface PDFClaim {
+export type PDFClaim = {
   /**
    * The hash of the PDF document being verified
    */
@@ -37,7 +37,7 @@ export interface PDFClaim {
   };
 }
 
-export interface VerificationResult {
+export type VerificationResult = {
   /**
    * Whether the claim verification succeeded
    */
@@ -74,13 +74,13 @@ export interface VerificationResult {
  *   publicInputs: { minAge: 18 }
  * };
  * 
- * const result = await verify_pdf_claim(claim);
+ * const result = await verifyPdfClaim(claim);
  * if (result.isValid) {
  *   console.log('Claim verified successfully');
  * }
  * ```
  */
-export async function verify_pdf_claim(claim: PDFClaim): Promise<VerificationResult> {
+export async function verifyPdfClaim(claim: PDFClaim): Promise<VerificationResult> {
   try {
     // Validate input parameters
     if (!claim || typeof claim !== 'object') {
@@ -142,7 +142,7 @@ export async function verify_pdf_claim(claim: PDFClaim): Promise<VerificationRes
         status: 'verified',
         details: {
           claimType: claim.claimType,
-          timestamp: claim.metadata?.timestamp || Date.now(),
+          timestamp: claim.metadata?.timestamp ?? Date.now(),
         },
       };
     }
@@ -160,6 +160,15 @@ export async function verify_pdf_claim(claim: PDFClaim): Promise<VerificationRes
     };
   }
 }
+
+/**
+ * Alias for verifyPdfClaim with snake_case naming convention
+ * This is provided for compatibility with the zkpdf_lib naming scheme
+ * 
+ * @deprecated Use verifyPdfClaim (camelCase) instead
+ */
+// eslint-disable-next-line @typescript-eslint/naming-convention
+export const verify_pdf_claim = verifyPdfClaim;
 
 /**
  * Internal function to verify the cryptographic proof
