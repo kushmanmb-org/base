@@ -101,6 +101,26 @@ All workflows follow a consistent structure:
 - **Triggers:** Manual dispatch and weekday schedule
 - **Timeout:** 20 minutes
 
+## Composite Actions
+
+### setup-node-yarn
+- **Location:** `.github/actions/setup-node-yarn/action.yml`
+- **Purpose:** Provides a reusable action for setting up Node.js with Yarn
+- **Features:**
+  - Sets up Node.js with specified version (default: 24.x)
+  - Enables Yarn caching for faster installs
+  - Enables Corepack for proper Yarn version management
+  - Installs dependencies with `yarn`
+- **Usage:**
+  ```yaml
+  steps:
+    - uses: actions/checkout@v4
+    - name: Setup Node.js with Yarn
+      uses: ./.github/actions/setup-node-yarn
+      with:
+        node-version: 24.x
+  ```
+
 ## Guidelines for Creating New Workflows
 
 When creating a new workflow, ensure you:
@@ -123,10 +143,15 @@ When creating a new workflow, ensure you:
 5. **Use caching**
    - Enable caching for dependencies (e.g., `cache: 'yarn'` in setup-node)
 
-6. **Add workflow_dispatch when appropriate**
+6. **Use reusable composite actions**
+   - Use `./.github/actions/setup-node-yarn` for Node.js setup with Yarn
+   - This composite action handles Node.js setup, Corepack enablement, and dependency installation
+   - Note: Checkout step is still needed before using this action
+
+7. **Add workflow_dispatch when appropriate**
    - Allow manual triggering for debugging and ad-hoc runs
 
-7. **Document the workflow**
+8. **Document the workflow**
    - Add comments explaining what the workflow does
    - Update this document with new workflows
 
