@@ -1,4 +1,4 @@
-pragma solidity 0.4.26;
+pragma solidity ^0.4.18;
 
 contract Test12345 {
     string public test;
