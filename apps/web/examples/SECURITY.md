@@ -66,6 +66,7 @@ Implement proper access control for sensitive functions:
 
 ```solidity
 address public owner;
+address public pendingOwner;
 
 modifier onlyOwner() {
     require(msg.sender == owner, "Only owner can call this");
@@ -74,6 +75,18 @@ modifier onlyOwner() {
 
 function criticalFunction() public onlyOwner {
     // Protected code
+}
+
+// Two-step ownership transfer prevents accidental transfers
+function transferOwnership(address newOwner) public onlyOwner {
+    require(newOwner != address(0), "Invalid address");
+    pendingOwner = newOwner;
+}
+
+function acceptOwnership() public {
+    require(msg.sender == pendingOwner, "Not pending owner");
+    owner = pendingOwner;
+    pendingOwner = address(0);
 }
 ```
 
@@ -94,13 +107,16 @@ function setValue(string _value) public {
 Emit events for all state changes for transparency and monitoring:
 
 ```solidity
-event ValueUpdated(string newValue, address indexed updatedBy);
+event ValueUpdated(bytes32 indexed valueHash, address indexed updatedBy);
 
 function setValue(string _value) public {
     value = _value;
-    emit ValueUpdated(_value, msg.sender);
+    // Emit hash for privacy - blockchain data is public and permanent
+    emit ValueUpdated(keccak256(_value), msg.sender);
 }
 ```
+
+**Important:** Remember that all blockchain data is public and permanent. Consider privacy implications when emitting event data. Use hashes for sensitive information.
 
 ### 6. Reentrancy Protection
 
@@ -127,6 +143,41 @@ For Solidity < 0.8.0, use SafeMath library. Solidity 0.8.0+ has built-in checks.
 - Pack storage variables efficiently
 - Avoid unbounded loops
 - Consider gas costs for string operations
+
+### 9. Blockchain Privacy
+
+**Remember:** All blockchain data is public and permanent.
+
+- **Events:** Consider emitting hashes instead of raw sensitive data
+- **Storage:** Never store private keys, passwords, or personal data on-chain
+- **Function Parameters:** Be aware that all transaction data is visible
+- **Privacy Patterns:** Use zero-knowledge proofs or off-chain storage when needed
+
+```solidity
+// ❌ BAD: Exposes sensitive data permanently
+event UserRegistered(string email, string password);
+
+// ✅ GOOD: Uses hash for privacy
+event UserRegistered(bytes32 indexed emailHash, address indexed user);
+```
+
+### 10. Two-Step Ownership Transfer
+
+Always implement two-step ownership transfers to prevent accidental loss of control:
+
+```solidity
+// Step 1: Current owner initiates transfer
+function transferOwnership(address newOwner) public onlyOwner {
+    pendingOwner = newOwner;
+}
+
+// Step 2: New owner accepts ownership
+function acceptOwnership() public {
+    require(msg.sender == pendingOwner);
+    owner = pendingOwner;
+    pendingOwner = address(0);
+}
+```
 
 ## 🔍 Pre-Deployment Checklist
 

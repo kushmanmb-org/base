@@ -94,7 +94,8 @@ The implementation was tested with the Test12345 contract (available in `Test123
 - Owner-based access control
 - Event emission for state changes
 - Input validation
-- Ownership transfer functionality
+- Two-step ownership transfer pattern for safety
+- Privacy-preserving event emission (hashes instead of raw data)
 
 ```solidity
 // SPDX-License-Identifier: MIT
@@ -102,9 +103,13 @@ pragma solidity ^0.4.18;
 
 contract Test12345 {
     address public owner;
+    address public pendingOwner;
     string public test;
     
-    event ValueUpdated(string newValue, address indexed updatedBy);
+    // Events for transparency and auditability
+    event ValueUpdated(bytes32 indexed valueHash, address indexed updatedBy);
+    event OwnershipTransferInitiated(address indexed currentOwner, address indexed pendingOwner);
+    event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
     
     function Test12345() public {
         owner = msg.sender;
@@ -115,16 +120,36 @@ contract Test12345 {
         _;
     }
     
+    modifier onlyPendingOwner() {
+        require(msg.sender == pendingOwner, "Only pending owner can call this function");
+        _;
+    }
+    
     function enterValue(string _c) public onlyOwner {
         require(bytes(_c).length > 0, "Value cannot be empty");
         require(bytes(_c).length <= 256, "Value too long");
         test = _c;
-        emit ValueUpdated(_c, msg.sender);
+        emit ValueUpdated(keccak256(_c), msg.sender);
     }
     
+    // Two-step ownership transfer for safety
     function transferOwnership(address newOwner) public onlyOwner {
         require(newOwner != address(0), "Invalid address");
-        owner = newOwner;
+        require(newOwner != owner, "Already the owner");
+        pendingOwner = newOwner;
+        emit OwnershipTransferInitiated(owner, newOwner);
+    }
+    
+    function acceptOwnership() public onlyPendingOwner {
+        address previousOwner = owner;
+        owner = pendingOwner;
+        pendingOwner = address(0);
+        emit OwnershipTransferred(previousOwner, owner);
+    }
+    
+    function cancelOwnershipTransfer() public onlyOwner {
+        require(pendingOwner != address(0), "No pending transfer");
+        pendingOwner = address(0);
     }
 }
 ```
