@@ -26,6 +26,7 @@ jest.mock('apps/web/src/components/Basenames/RegistrationContext', () => ({
 // Mock the ImageAdaptive component
 jest.mock('apps/web/src/components/ImageAdaptive', () => ({
   __esModule: true,
+  // eslint-disable-next-line @next/next/no-img-element
   default: ({ alt, src }: { alt: string; src: string }) => (
     <img data-testid={`image-${alt.toLowerCase().replace(/\s+/g, '-')}`} alt={alt} src={src} />
   ),

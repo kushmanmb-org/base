@@ -215,8 +215,9 @@ export function useWebGLInteraction(
       window.removeEventListener('scroll', handleScroll);
       resizeObserver.disconnect();
 
-      if (animationRef.current.animationFrameId !== null) {
-        cancelAnimationFrame(animationRef.current.animationFrameId);
+      const animationFrameId = animationRef.current.animationFrameId;
+      if (animationFrameId !== null) {
+        cancelAnimationFrame(animationFrameId);
         animationRef.current.animationFrameId = null;
       }
     };
