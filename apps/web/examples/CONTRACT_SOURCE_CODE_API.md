@@ -88,23 +88,94 @@ async function getContractSource(address: string) {
 
 ## Test Contract Example
 
-The implementation was tested with the Test12345 contract from the problem statement (available in `Test12345.sol`):
+The implementation was tested with the Test12345 contract (available in `Test12345.sol`). The contract demonstrates best practices including:
+
+- SPDX license identifier
+- Owner-based access control
+- Event emission for state changes
+- Input validation
+- Two-step ownership transfer pattern for safety
+- Privacy-preserving event emission (hashes instead of raw data)
 
 ```solidity
-pragma solidity 0.4.26;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.4.18;
 
 contract Test12345 {
+    address public owner;
+    address public pendingOwner;
     string public test;
     
-    function enterValue(string memory _c) public {
+    // Events for transparency and auditability
+    event ValueUpdated(bytes32 indexed valueHash, address indexed updatedBy);
+    event OwnershipTransferInitiated(address indexed currentOwner, address indexed pendingOwner);
+    event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
+    event OwnershipTransferCancelled(address indexed owner, address indexed cancelledPendingOwner);
+    
+    function Test12345() public {
+        owner = msg.sender;
+    }
+    
+    modifier onlyOwner() {
+        require(msg.sender == owner, "Only owner can call this function");
+        _;
+    }
+    
+    modifier onlyPendingOwner() {
+        require(msg.sender == pendingOwner, "Only pending owner can call this function");
+        _;
+    }
+    
+    function enterValue(string _c) public onlyOwner {
+        require(bytes(_c).length > 0, "Value cannot be empty");
+        require(bytes(_c).length <= 256, "Value too long");
         test = _c;
+        emit ValueUpdated(keccak256(bytes(_c)), msg.sender);
+    }
+    
+    // Two-step ownership transfer for safety
+    function transferOwnership(address newOwner) public onlyOwner {
+        require(newOwner != address(0), "Invalid address");
+        require(newOwner != owner, "Already the owner");
+        pendingOwner = newOwner;
+        emit OwnershipTransferInitiated(owner, newOwner);
+    }
+    
+    function acceptOwnership() public onlyPendingOwner {
+        address previousOwner = owner;
+        owner = pendingOwner;
+        pendingOwner = address(0);
+        emit OwnershipTransferred(previousOwner, owner);
+    }
+    
+    function cancelOwnershipTransfer() public onlyOwner {
+        require(pendingOwner != address(0), "No pending transfer");
+        address cancelled = pendingOwner;
+        pendingOwner = address(0);
+        emit OwnershipTransferCancelled(owner, cancelled);
     }
 }
 ```
 
 ## Environment Variables
 
+⚠️ **Security Note:** Never commit API keys or private keys to version control. Always use environment variables.
+
 The API requires the `ETHERSCAN_API_KEY` environment variable to be set. This key is used for both Etherscan and Basescan API calls.
+
+### Setup
+
+1. Copy the example environment file:
+   ```bash
+   cp apps/web/.env.local.example apps/web/.env.local
+   ```
+
+2. Add your API key to `.env.local`:
+   ```bash
+   ETHERSCAN_API_KEY=your_api_key_here
+   ```
+
+3. The `.env.local` file is already included in `.gitignore` and will not be committed.
 
 ## Type Safety
 
