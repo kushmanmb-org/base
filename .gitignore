@@ -235,7 +235,6 @@ api-mocks-private/
 postman_environment.json
 insomnia-*.json
 thunder-client-*.json
-.vscode/settings.json
 
 # Logs and temporary files
 logs/
@@ -361,9 +360,13 @@ flamegraph.svg
 *.local.config
 .local/
 local/
-my-*.json
-my-*.js
-my-*.ts
+my-*.config.json
+my-*.config.js
+my-*.config.ts
+my-*-config.json
+my-*-config.js
+my-credentials*.json
+my-secrets*.json
 
 # Backup and temporary files from editors
 *.tmp
@@ -372,14 +375,16 @@ my-*.ts
 *~.nib
 *.bkp
 
-# Personal notes and documentation
-NOTES.md
-NOTES.txt
-TODO.md
-TODO.txt
+# Personal notes and documentation (use .local suffix for personal versions)
+NOTES.local.md
+NOTES.local.txt
+TODO.local.md
+TODO.local.txt
 SCRATCH.md
+SCRATCH.txt
 personal-notes/
 my-notes/
+.personal/
 
 # Local scripts and utilities
 run-local.*
