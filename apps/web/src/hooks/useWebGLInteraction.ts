@@ -127,6 +127,9 @@ export function useWebGLInteraction(
     const element = getElement();
     if (!element) return;
 
+    // Capture the animation ref for cleanup
+    const animationState = animationRef.current;
+
     // Ensure initial rect measurement happens after layout is stable
     const scheduleInitialRect = () => {
       requestAnimationFrame(() => {
@@ -215,10 +218,9 @@ export function useWebGLInteraction(
       window.removeEventListener('scroll', handleScroll);
       resizeObserver.disconnect();
 
-      const animationFrameId = animationRef.current.animationFrameId;
+      const animationFrameId = animationState.animationFrameId;
       if (animationFrameId !== null) {
         cancelAnimationFrame(animationFrameId);
-        animationRef.current.animationFrameId = null;
       }
     };
   }, [getElement, screenToUV, updateRect, updateUniforms]);
