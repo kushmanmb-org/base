@@ -127,7 +127,9 @@ export function useWebGLInteraction(
     const element = getElement();
     if (!element) return;
 
-    // Capture the animation ref for cleanup
+    // Capture the animation ref for cleanup.
+    // Note: This creates a reference to the same object, not a copy.
+    // Modifying animationState.animationFrameId will update animationRef.current.animationFrameId
     const animationState = animationRef.current;
 
     // Ensure initial rect measurement happens after layout is stable
