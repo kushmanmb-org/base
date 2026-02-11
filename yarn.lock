@@ -213,6 +213,7 @@ __metadata:
     uuid: ^10.0.0
     viem: 2.x
     wagmi: 2.17.5
+    whatwg-fetch: ^3.6.20
     zustand: ^5.0.5
   languageName: unknown
   linkType: soft
@@ -23382,7 +23383,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"whatwg-fetch@npm:^3.4.1":
+"whatwg-fetch@npm:^3.4.1, whatwg-fetch@npm:^3.6.20":
   version: 3.6.20
   resolution: "whatwg-fetch@npm:3.6.20"
   checksum: c58851ea2c4efe5c2235f13450f426824cf0253c1d45da28f45900290ae602a20aff2ab43346f16ec58917d5562e159cd691efa368354b2e82918c2146a519c5
