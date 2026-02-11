@@ -206,13 +206,8 @@ vault-password*.txt
 **/ansible/vault-pass
 **/.ansible-vault
 
-# IDE and editor files
-.vscode/*
-!.vscode/settings.json
-!.vscode/extensions.json
-!.vscode/launch.json
-!.vscode/tasks.json
-.vscode/settings.local.json
+# IDE and editor files  
+.vscode/
 .idea/
 .idea/workspace.xml.local
 *.swp
