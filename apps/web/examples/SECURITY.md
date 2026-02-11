@@ -124,7 +124,8 @@ event ValueUpdated(bytes32 indexed valueHash, address indexed updatedBy);
 function setValue(string _value) public {
     value = _value;
     // Emit hash for privacy - blockchain data is public and permanent
-    // Note: In Solidity 0.4.x, use keccak256(bytes(_value))
+    // Note: 'emit' keyword requires Solidity 0.4.21+
+    // For 0.4.18-0.4.20, omit 'emit': ValueUpdated(keccak256(bytes(_value)), msg.sender);
     emit ValueUpdated(keccak256(bytes(_value)), msg.sender);
 }
 ```

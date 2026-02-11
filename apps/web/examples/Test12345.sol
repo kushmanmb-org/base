@@ -1,4 +1,6 @@
 // SPDX-License-Identifier: MIT
+// Note: Using ^0.4.18 allows compatibility with 0.4.18-0.4.26
+// The 'emit' keyword requires 0.4.21+, so this contract needs 0.4.21+
 pragma solidity ^0.4.18;
 
 contract Test12345 {
