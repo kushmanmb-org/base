@@ -1,5 +1,4 @@
 require('dotenv').config({ path: `.env.local`, override: true });
-require('./helpers/fetchPolyfill');
 
 const fs = require('fs');
 const { getBaseCoreContributors } = require('./helpers/getBaseCoreContributors');
