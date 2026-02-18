@@ -41,6 +41,18 @@ yarn
 yarn build
 ```
 
+Alternatively, you can use the new Makefile for parallel builds:
+
+```shell
+make setup   # Install dependencies
+make build   # Build all workspaces in parallel
+make lint    # Run linting
+make test    # Run tests
+make ci      # Run full CI pipeline locally
+```
+
+See [BUILD_SYSTEM.md](BUILD_SYSTEM.md) for more details on the build system.
+
 ## Local development
 
 To start a development server on localhost, run `yarn workspace @app/<project> dev`.
