@@ -233,3 +233,9 @@ mock-private-keys*.json
 # But allow safe test fixtures
 !**/test-data/**/*.example.*
 !**/fixtures/**/*.example.*
+# CodeQL/Bearer security scan results
+results.sarif
+*.sarif
+
+# Makefile artifacts
+.make/

@@ -17,14 +17,13 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build:
+  lint:
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
     strategy:
       matrix:
         node-version: [24.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
       - uses: actions/checkout@v4
@@ -33,6 +32,39 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - name: Lint
-        run: yarn lint
+        run: make lint
+
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    strategy:
+      matrix:
+        node-version: [24.x]
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node.js with Yarn
+        uses: ./.github/actions/setup-node-yarn
+        with:
+          node-version: ${{ matrix.node-version }}
       - name: Build
-        run: yarn build
+        run: make build
+
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    strategy:
+      matrix:
+        node-version: [24.x]
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node.js with Yarn
+        uses: ./.github/actions/setup-node-yarn
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Security Audit
+        run: make audit
+        continue-on-error: true
