@@ -4,7 +4,6 @@ import {
   type Chain,
   type PublicClient,
   type WalletClient,
-  encodeFunctionData,
   namehash,
   normalize,
 } from 'viem';
@@ -30,7 +29,7 @@ function formatDefaultUsername(username: string): Basename {
     !username.endsWith(`.${USERNAME_DOMAINS[baseSepolia.id]}`) &&
     !username.endsWith(`.${USERNAME_DOMAINS[base.id]}`)
   ) {
-    return `${username}.${USERNAME_DOMAINS[base.id]}`.toLocaleLowerCase() as Basename;
+    return `${username}.${USERNAME_DOMAINS[base.id]}`.toLowerCase() as Basename;
   }
   return username as Basename;
 }
@@ -121,13 +120,6 @@ function createResolver(
     address: resolverAddress,
     setText: async (key: string, value: string): Promise<EnsTransaction> => {
       const nameHash = namehash(name);
-
-      // Encode the setText function call
-      const data = encodeFunctionData({
-        abi: L2ResolverAbi,
-        functionName: 'setText',
-        args: [nameHash, key, value],
-      });
 
       // Get the account from wallet client
       const [account] = await walletClient.getAddresses();

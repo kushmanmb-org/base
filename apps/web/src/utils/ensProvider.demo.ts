@@ -1,8 +1,8 @@
 /**
  * Simple demonstration of the ENS Provider API implementation
- * 
+ *
  * This file shows how the problem statement code would work:
- * 
+ *
  * ```javascript
  * const resolver = await provider.getResolver("kushmanmb.eth");
  * const tx = await resolver.setText("twitter", "@kushmanmb");
