@@ -27,7 +27,7 @@ module.exports = async () => {
     ...nextJestConfig,
     transformIgnorePatterns: [
       // Transform all node_modules except the ones below
-      'node_modules/(?!(.*\\.mjs$|@coinbase/onchainkit|wagmi|@wagmi|viem|node-fetch|data-uri-to-buffer|fetch-blob|formdata-polyfill|graphql-request|cross-fetch|is-ipfs|uint8arrays|multiformats|@multiformats|iso-url))',
+      'node_modules/(?!(.*\\.mjs$|@coinbase/onchainkit|wagmi|@wagmi|viem|data-uri-to-buffer|fetch-blob|formdata-polyfill|graphql-request|cross-fetch|is-ipfs|uint8arrays|multiformats|@multiformats|iso-url))',
     ],
   };
 };
