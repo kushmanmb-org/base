@@ -16,7 +16,7 @@ async function handleWithTimeout(
   handlerPromise: Promise<NextResponse>,
   timeoutLimit: number | string,
 ): Promise<NextResponse> {
-  let timeoutId: NodeJS.Timeout;
+  let timeoutId: NodeJS.Timeout | undefined;
   const timeoutPromise = new Promise<never>((_, reject) => {
     timeoutId = setTimeout(() => reject(new Error('Request timed out')), timeoutLimit as number);
   });
@@ -39,7 +39,9 @@ async function handleWithTimeout(
     });
     return NextResponse.json({ error: 'Something went wrong' }, { status: 500 });
   } finally {
-    clearTimeout(timeoutId!);
+    if (timeoutId !== undefined) {
+      clearTimeout(timeoutId);
+    }
   }
 }
 
