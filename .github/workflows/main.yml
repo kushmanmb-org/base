@@ -25,4 +25,4 @@ jobs:
         with:
           node-version: 24.x
       - name: Run Tests
-        run: yarn test
+        run: make test-unit
