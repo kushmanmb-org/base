@@ -4,7 +4,11 @@
 .DEFAULT_GOAL := help
 
 # Detect number of CPU cores for parallel execution
-MAKEFLAGS += --jobs=$(shell nproc 2>/dev/null || sysctl -n hw.ncpu 2>/dev/null || echo 4)
+# Use 75% of available cores to avoid overloading the system
+# Can be overridden with MAKE_JOBS environment variable
+NPROC := $(shell nproc 2>/dev/null || sysctl -n hw.ncpu 2>/dev/null || echo 4)
+MAKE_JOBS ?= $(shell echo $$(($(NPROC) * 3 / 4)))
+MAKEFLAGS += --jobs=$(MAKE_JOBS)
 
 help: ## Display this help message
 	@echo "Available targets:"
@@ -47,7 +51,7 @@ clean: ## Clean build artifacts and caches
 	yarn workspaces foreach --parallel run clean || true
 	rm -rf .yarn/cache/*
 	rm -rf node_modules/.cache
-	find . -type d -name "dist" -o -name "build" -o -name ".next" | grep -v node_modules | xargs rm -rf
+	find . -type d \( -name "dist" -o -name "build" -o -name ".next" \) | grep -v node_modules | xargs rm -rf
 
 ci: setup lint test-unit build security-scan audit ## Run full CI pipeline locally
 

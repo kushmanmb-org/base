@@ -70,9 +70,9 @@ This ensures your commits are properly attributed to you.
 
 7. **Open a Pull Request**: Describe what you did in the pull request description. Mention the issue number if your pull request is related to an existing issue. 
 
-5. **Include Screenshots**: If your pull request includes any visual changes to the project, please include before and after screenshots in your pull request description to help us better understand the changes.
+8. **Include Screenshots**: If your pull request includes any visual changes to the project, please include before and after screenshots in your pull request description to help us better understand the changes.
 
-6. **Wait for review**: Once your pull request is opened, it will be reviewed as soon as possible. Changes may be requested, and your responsiveness is appreciated.
+9. **Wait for review**: Once your pull request is opened, it will be reviewed as soon as possible. Changes may be requested, and your responsiveness is appreciated.
 
 ## Coding Conventions
 

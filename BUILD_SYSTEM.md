@@ -36,9 +36,23 @@ The project now includes a Makefile with the following targets:
 
 The Makefile automatically detects the number of CPU cores available and runs tasks in parallel where possible:
 
+- Uses 75% of available CPU cores by default to avoid overloading the system
 - `yarn workspaces foreach --parallel` is used for workspace operations
 - Build, lint, and test operations run concurrently across workspaces
-- Makefile jobs use `--jobs=$(nproc)` for maximum parallelization
+- Can be customized via the `MAKE_JOBS` environment variable
+
+### Customizing Parallelism
+
+```bash
+# Use all available cores
+MAKE_JOBS=$(nproc) make build
+
+# Limit to 2 parallel jobs
+MAKE_JOBS=2 make build
+
+# Or use Make's -j flag directly
+make -j2 build
+```
 
 ## CI/CD Pipelines
 
