@@ -9,7 +9,7 @@ Contact: mailto:security@base.org
 Canonical: https://base.org/.well-known/security.txt
 
 # Security policy and reporting guidelines
-Policy: https://github.com/base-org/base/blob/master/POLICY.md
+Policy: https://github.com/base-org/base/blob/HEAD/POLICY.md
 
 # Security acknowledgments
 Acknowledgments: https://github.com/base-org/base/security/advisories
