@@ -10,8 +10,7 @@ GitHub Rulesets provide advanced branch protection and repository rules that enf
 
 1. **`master-branch-protection.json`** - Main branch protection rules
 2. **`release-branch-protection.json`** - Release branch protection rules
-3. **`pull-request-rules.json`** - Pull request workflow rules
-4. **`tag-protection.json`** - Tag protection rules
+3. **`tag-protection.json`** - Tag protection rules
 
 ## Applying Rulesets
 
@@ -73,16 +72,6 @@ Key Rules:
 Applies to: `release/*` branches
 
 Similar to master protection with allowances for release management.
-
-### Pull Request Rules
-
-Applies to: All branches with PRs targeting protected branches
-
-Key Rules:
-- Require status checks before merge
-- Require up-to-date branches
-- Auto-dismiss stale reviews
-- Require code owner review
 
 ### Tag Protection
 
