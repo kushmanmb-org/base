@@ -239,3 +239,6 @@ results.sarif
 
 # Makefile artifacts
 .make/
+
+# E2E test cache files
+apps/web/e2e/.cache/
