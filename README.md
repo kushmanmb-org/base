@@ -73,6 +73,12 @@ yarn workspace @app/web dev
 
 We welcome contributions to Base! For guidelines on how to contribute please refer to [CONTRIBUTING.md](CONTRIBUTING.md).
 
+### Repository Policies
+
+This repository follows strict branch protection rules and development workflows. Please review:
+- [POLICY.md](POLICY.md) - Repository policies, branch protection rules, and development workflow
+- [Branch Protection Rulesets](.github/rulesets/README.md) - Technical implementation of protection rules
+
 ### Updating the Base Ecosystem Page
 
 If you're a builder who wants to add or update your project on the [Base Ecosystem](https://base.org/ecosystem) page, follow these steps:

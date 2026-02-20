@@ -44,6 +44,8 @@ This ensures your commits are properly attributed to you.
 
 ### Pull Requests
 
+**Important**: Before creating a pull request, please review the [Repository Policy (POLICY.md)](POLICY.md) which outlines branch protection rules, required status checks, and development workflows.
+
 1. **Fork the repository** and create your branch from `master`.
 
 2. **Set up the development environment**:
