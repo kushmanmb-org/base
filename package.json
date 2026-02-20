@@ -79,10 +79,11 @@
     "next-transpile-modules": "^10.0.0",
     "tar": "^7.5.7",
     "wagmi": "2.14.12",
-    "@coinbase/onchaintestkit@^1.1.0": "patch:@coinbase/onchaintestkit@npm%3A1.1.0#./.yarn/patches/@coinbase-onchaintestkit-npm-1.1.0-cf2ac27ed0.patch"
+    "@coinbase/onchaintestkit": "patch:@coinbase/onchaintestkit@npm%3A1.1.0#./.yarn/patches/@coinbase-onchaintestkit-npm-1.1.0-cf2ac27ed0.patch"
   },
   "resolutionComments": {
-    "next-transpile-modules": "Next compatibility"
+    "next-transpile-modules": "Next compatibility",
+    "@coinbase/onchaintestkit": "Patched to update MetaMask extension from 12.8.1 to 12.9.0 for GHSA-9cwf-fhxr-4f53"
   },
   "engines": {
     "node": "24.x"
