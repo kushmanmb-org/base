@@ -111,3 +111,7 @@ export const DEVCON_DISCOUNT_VALIDATORS: AddressMap = {
   [baseSepolia.id]: '0x5c81c392C22Cba477a70D809DE6d6Cd362A1c3DE',
   [base.id]: '0xFca2EB54EaB56085e25a32BfF30fe8C452216c5F',
 };
+
+export const KUSHMANMB_YAKETH_DISCOUNT_VALIDATORS: AddressMap = {
+  [base.id]: '0xc0bc84e95864bdfdcd1ccfb8a3aa522e79ca1410',
+};
