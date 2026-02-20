@@ -113,5 +113,5 @@ export const DEVCON_DISCOUNT_VALIDATORS: AddressMap = {
 };
 
 export const KUSHMANMB_YAKETH_DISCOUNT_VALIDATORS: AddressMap = {
-  [base.id]: '0xc0bc84e95864bdfdcd1ccfb8a3aa522e79ca1410',
+  [base.id]: '0xC0Bc84e95864BdFdCd1ccFb8A3Aa522E79ca1410',
 };
