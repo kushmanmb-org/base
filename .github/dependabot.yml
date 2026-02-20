@@ -9,6 +9,8 @@ updates:
     open-pull-requests-limit: 10
     reviewers:
       - "kushmanmb-org/maintainers"
+      - "gitpoap-bot"
+      - "kushmanmb"
     labels:
       - "dependencies"
       - "automated"
@@ -34,6 +36,10 @@ updates:
     schedule:
       interval: "weekly"
       day: "monday"
+    reviewers:
+      - "kushmanmb-org/maintainers"
+      - "gitpoap-bot"
+      - "kushmanmb"
     labels:
       - "dependencies"
       - "github-actions"
