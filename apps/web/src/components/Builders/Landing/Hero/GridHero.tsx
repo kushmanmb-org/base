@@ -75,7 +75,7 @@ export function GridHero({ hasBlue = false }: GridHeroProps) {
 
     // Store active flashes with their expiration times
     const activeFlashes = new Map<string, number>();
-    let animationFrameId: NodeJS.Timeout;
+    let animationTimeoutId: NodeJS.Timeout;
     
     function animate() {
       const now = Date.now();
@@ -101,12 +101,12 @@ export function GridHero({ hasBlue = false }: GridHeroProps) {
         }
       }
       
-      animationFrameId = setTimeout(animate, FRAME_INTERVAL);
+      animationTimeoutId = setTimeout(animate, FRAME_INTERVAL);
     }
 
     drawGridLines();
     animate();
-    return () => clearTimeout(animationFrameId);
+    return () => clearTimeout(animationTimeoutId);
   }, [hasBlue, canvasWidth]);
 
   return (

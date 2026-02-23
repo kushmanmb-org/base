@@ -343,12 +343,12 @@ export default function UsernameProfileSectionHeatmap() {
           }
         }
         for (const tx of filteredBaseTransactions) {
-          if (tx.input.includes('60806040')) {
+          if (tx.input?.startsWith('0x60806040')) {
             allBaseDeployments.push(tx.hash);
           }
         }
         for (const tx of filteredSepoliaTransactions) {
-          if (tx.input.includes('60806040')) {
+          if (tx.input?.startsWith('0x60806040')) {
             allSepoliaDeployments.push(tx.hash);
           }
         }
