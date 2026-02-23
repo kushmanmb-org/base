@@ -165,122 +165,16 @@ function formatPostData(params) {
 }
 
 // Resolve ENS or Basename to Ethereum address
-async function resolveNameToAddress(name, rpcUrl) {
-  // If already a hex address, return it
-  if (/^0x[a-fA-F0-9]{40}$/.test(name)) {
-    return name;
-  }
-  
-  // Check if it's an ENS/Basename
-  if (!name.endsWith('.eth')) {
-    console.error('Error: Address must be a hex address (0x...) or ENS/Basename (.eth)');
-    process.exit(1);
-  }
-  
-  console.log(`Resolving ${name} to address...`);
-  
-  try {
-    // Use eth_call to resolve ENS name via RPC
-    const namehash = getNamehash(name);
-    const resolverData = await makeRpcCall(rpcUrl, 'eth_call', [{
-      to: '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e', // ENS Registry
-      data: '0x0178b8bf' + namehash.slice(2) // resolver(bytes32)
-    }, 'latest']);
-    
-    if (!resolverData || resolverData === '0x' || resolverData === '0x0000000000000000000000000000000000000000000000000000000000000000') {
-      console.error('Error: Could not find resolver for', name);
-      process.exit(1);
-    }
-    
-    const resolverAddress = '0x' + resolverData.slice(26);
-    
-    // Get address from resolver
-    const addressData = await makeRpcCall(rpcUrl, 'eth_call', [{
-      to: resolverAddress,
-      data: '0x3b3b57de' + namehash.slice(2) // addr(bytes32)
-    }, 'latest']);
-    
-    if (!addressData || addressData === '0x' || addressData === '0x0000000000000000000000000000000000000000000000000000000000000000') {
-      console.error('Error: Could not resolve address for', name);
-      process.exit(1);
-    }
-    
-    const address = '0x' + addressData.slice(26);
-    console.log(`✓ Resolved ${name} to ${address}\n`);
-    return address;
-  } catch (error) {
-    console.error('Error resolving ENS/Basename:', error.message);
-    process.exit(1);
-  }
-}
-
-// Simple namehash implementation for ENS
-function getNamehash(name) {
-  let node = '0x0000000000000000000000000000000000000000000000000000000000000000';
-  
-  if (name) {
-    const labels = name.split('.');
-    for (let i = labels.length - 1; i >= 0; i--) {
-      const labelHash = keccak256(labels[i]);
-      node = keccak256(Buffer.from(node.slice(2) + labelHash.slice(2), 'hex'));
-    }
-  }
-  
-  return node;
-}
-
-// Simple keccak256 implementation (requires crypto module)
-function keccak256(data) {
-  const crypto = require('crypto');
-  const input = typeof data === 'string' ? Buffer.from(data, 'utf8') : data;
-  
-  // Node.js doesn't have built-in keccak256, so we'll use a workaround
-  // For production use, consider using ethers.js or web3.js
-  // For now, we'll use a simplified approach that requires the name to be a hex address
-  // when ENS resolution fails
-  throw new Error('ENS resolution requires additional dependencies. Please use hex address (0x...) instead.');
-}
-
-// Make JSON-RPC call
-async function makeRpcCall(rpcUrl, method, params) {
-  const postData = JSON.stringify({
-    jsonrpc: '2.0',
-    method: method,
-    params: params,
-    id: 1
-  });
-  
-  return new Promise((resolve, reject) => {
-    const parsedUrl = new URL(rpcUrl);
-    const lib = parsedUrl.protocol === 'https:' ? https : http;
-    
-    const options = {
-      hostname: parsedUrl.hostname,
-      path: parsedUrl.pathname,
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Content-Length': Buffer.byteLength(postData)
-      }
-    };
-    
-    const req = lib.request(options, (res) => {
-      let data = '';
-      res.on('data', (chunk) => data += chunk);
-      res.on('end', () => {
-        try {
-          const response = JSON.parse(data);
-          resolve(response.result);
-        } catch (error) {
-          reject(error);
-        }
-      });
-    });
-    
-    req.on('error', reject);
-    req.write(postData);
-    req.end();
-  });
+// Note: Full ENS resolution requires keccak256 which isn't available in Node.js by default.
+// This function provides a helpful error message directing users to resolve names manually.
+async function resolveNameToAddress(name, network) {
+  console.error('\n⚠️  ENS/Basename resolution requires additional cryptographic libraries.');
+  console.error('Please resolve the name manually and use the hex address instead.');
+  console.error('\nTo resolve', name, 'visit:');
+  console.error('- https://app.ens.domains/ (for .eth names)');
+  console.error('- https://www.base.org/names (for .base.eth names)');
+  console.error('\nThen run the command again with: --address 0x...\n');
+  process.exit(1);
 }
 
 // Verify contract on blockchain explorer
@@ -294,16 +188,9 @@ async function verifyContract() {
   // Resolve ENS/Basename if needed
   let contractAddress = args.address;
   if (args.address.endsWith('.eth')) {
-    try {
-      contractAddress = await resolveNameToAddress(args.address, network.rpcUrl);
-    } catch (error) {
-      console.error('\n⚠️  ENS/Basename resolution not fully supported in this script.');
-      console.error('Please provide the hex address (0x...) directly.');
-      console.error('\nYou can resolve', args.address, 'manually at:');
-      console.error('- https://app.ens.domains/ (for .eth names)');
-      console.error('- https://www.base.org/names (for .base.eth names)\n');
-      process.exit(1);
-    }
+    console.log(`Resolving ${args.address} to address...`);
+    await resolveNameToAddress(args.address, network.name);
+    // The function above will exit if ENS resolution is attempted
   } else if (!/^0x[a-fA-F0-9]{40}$/.test(contractAddress)) {
     console.error('Error: Invalid Ethereum address format');
     console.error('Address must be a hex address (0x...) or ENS/Basename (.eth)');
@@ -339,7 +226,7 @@ async function verifyContract() {
     compilerversion: args.compiler,
     optimizationUsed: args.optimization || '0',
     runs: args.runs || '200',
-    constructorArguements: args['constructor-args'] || '',
+    constructorArguments: args['constructor-args'] || '',
     evmversion: args.evmversion || '',
     licenseType: args.license || '1' // 1 = No License
   };

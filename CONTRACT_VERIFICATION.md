@@ -22,10 +22,10 @@ npm run verify -- \
 
 The `--address` parameter accepts:
 - Hex addresses (e.g., `0x1234567890abcdef1234567890abcdef12345678`)
-- ENS names (e.g., `kushmanmb.eth`, `yaketh.eth`)
-- Basenames (e.g., `kushmanmb.base.eth`)
+- ENS names (e.g., `kushmanmb.eth`, `yaketh.eth`) *
+- Basenames (e.g., `kushmanmb.base.eth`) *
 
-**Note:** ENS/Basename resolution requires the name to be properly configured with an address record. If resolution fails, the script will provide instructions for manual resolution.
+**\* Note on ENS/Basename Support:** While the script recognizes ENS and Basename formats, it does not perform automatic resolution. When you provide an ENS or Basename, the script will provide instructions for manual resolution. Automatic resolution would require additional cryptographic libraries not included by default.
 
 ### Example
 
@@ -146,17 +146,19 @@ Ensure the optimization settings match your deployment:
 
 ### ENS/Basename Resolution
 
-The script supports ENS and Basename resolution, but there are some limitations:
+The script recognizes ENS and Basename formats but provides guided manual resolution:
 
-- **ENS names** (e.g., `kushmanmb.eth`, `vitalik.eth`) work on Ethereum Mainnet and testnets
-- **Basenames** (e.g., `kushmanmb.base.eth`, `yaketh.base.eth`) work on Base networks
+- **ENS names** (e.g., `kushmanmb.eth`, `vitalik.eth`)
+- **Basenames** (e.g., `kushmanmb.base.eth`, `yaketh.base.eth`)
 
-If ENS/Basename resolution fails:
-1. Verify the name is correctly configured with an address record
-2. Check the name on:
+When you provide an ENS or Basename, the script will:
+1. Recognize the format
+2. Provide links to resolve the name:
    - https://app.ens.domains/ (for ENS names)
    - https://www.base.org/names (for Basenames)
-3. Use the resolved hex address directly with `--address 0x...`
+3. Ask you to re-run the command with the resolved hex address
+
+**Why manual resolution?** Automatic ENS resolution requires cryptographic libraries (keccak256) not included in Node.js by default. To keep the tool dependency-free, we guide you through manual resolution instead.
 
 ### "Source file not found"
 - Verify the path to the source file is correct
@@ -189,7 +191,7 @@ If ENS/Basename resolution fails:
 
 ```bash
 npm run verify -- \
-  --address 0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb \
+  --address 0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb0 \
   --source ./contracts/SimpleToken.sol \
   --name SimpleToken \
   --compiler v0.8.19+commit.7dd6d404 \
@@ -226,7 +228,7 @@ npm run verify -- \
 
 ```bash
 npm run verify -- \
-  --address 0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb \
+  --address 0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb0 \
   --source ./contracts/TokenWithArgs.sol \
   --name TokenWithArgs \
   --compiler v0.8.20+commit.a1b79de6 \
