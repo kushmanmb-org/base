@@ -10,7 +10,7 @@ The verification script is available at the root of the repository via npm scrip
 
 ```bash
 npm run verify -- \
-  --address <contract-address> \
+  --address <contract-address-or-ens-name> \
   --source <path-to-source-file> \
   --name <contract-name> \
   --compiler <compiler-version> \
@@ -20,8 +20,16 @@ npm run verify -- \
   [--constructor-args <hex-encoded-args>]
 ```
 
+The `--address` parameter accepts:
+- Hex addresses (e.g., `0x1234567890abcdef1234567890abcdef12345678`)
+- ENS names (e.g., `kushmanmb.eth`, `yaketh.eth`)
+- Basenames (e.g., `kushmanmb.base.eth`)
+
+**Note:** ENS/Basename resolution requires the name to be properly configured with an address record. If resolution fails, the script will provide instructions for manual resolution.
+
 ### Example
 
+Using hex address:
 ```bash
 npm run verify -- \
   --address 0x1234567890abcdef1234567890abcdef12345678 \
@@ -33,11 +41,38 @@ npm run verify -- \
   --runs 200
 ```
 
+Using ENS name:
+```bash
+npm run verify -- \
+  --address kushmanmb.eth \
+  --source ./contracts/MyContract.sol \
+  --name MyContract \
+  --compiler v0.8.20+commit.a1b79de6 \
+  --network mainnet \
+  --optimization 1 \
+  --runs 200
+```
+
+Using Basename:
+```bash
+npm run verify -- \
+  --address yaketh.base.eth \
+  --source ./contracts/MyContract.sol \
+  --name MyContract \
+  --compiler v0.8.20+commit.a1b79de6 \
+  --network base \
+  --optimization 1 \
+  --runs 200
+```
+
 ## Parameters
 
 ### Required Parameters
 
-- `--address`: The deployed contract address (must be a valid Ethereum address)
+- `--address`: The deployed contract address
+  - Can be a hex address: `0x1234567890abcdef1234567890abcdef12345678`
+  - Can be an ENS name: `kushmanmb.eth`, `vitalik.eth`
+  - Can be a Basename: `kushmanmb.base.eth`, `yaketh.base.eth`
 - `--source`: Path to the Solidity source code file (relative or absolute)
 - `--name`: The name of the contract as it appears in the source code
 - `--compiler`: The Solidity compiler version (e.g., `v0.8.20+commit.a1b79de6`)
@@ -109,6 +144,20 @@ Ensure the optimization settings match your deployment:
 
 ## Troubleshooting
 
+### ENS/Basename Resolution
+
+The script supports ENS and Basename resolution, but there are some limitations:
+
+- **ENS names** (e.g., `kushmanmb.eth`, `vitalik.eth`) work on Ethereum Mainnet and testnets
+- **Basenames** (e.g., `kushmanmb.base.eth`, `yaketh.base.eth`) work on Base networks
+
+If ENS/Basename resolution fails:
+1. Verify the name is correctly configured with an address record
+2. Check the name on:
+   - https://app.ens.domains/ (for ENS names)
+   - https://www.base.org/names (for Basenames)
+3. Use the resolved hex address directly with `--address 0x...`
+
 ### "Source file not found"
 - Verify the path to the source file is correct
 - Use relative paths from the repository root or absolute paths
@@ -145,6 +194,32 @@ npm run verify -- \
   --name SimpleToken \
   --compiler v0.8.19+commit.7dd6d404 \
   --network mainnet
+```
+
+### Using ENS name
+
+```bash
+npm run verify -- \
+  --address kushmanmb.eth \
+  --source ./contracts/MyContract.sol \
+  --name MyContract \
+  --compiler v0.8.20+commit.a1b79de6 \
+  --network mainnet \
+  --optimization 1 \
+  --runs 200
+```
+
+### Using Basename on Base network
+
+```bash
+npm run verify -- \
+  --address yaketh.base.eth \
+  --source ./contracts/BaseContract.sol \
+  --name BaseContract \
+  --compiler v0.8.20+commit.a1b79de6 \
+  --network base \
+  --optimization 1 \
+  --runs 1000
 ```
 
 ### With optimization and constructor arguments
