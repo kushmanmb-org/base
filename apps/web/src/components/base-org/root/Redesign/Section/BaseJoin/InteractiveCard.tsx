@@ -175,9 +175,7 @@ export const useImageTexture = (imagePath: string) => {
           loadedTexture.minFilter = THREE.LinearFilter;
           setImageTexture(loadedTexture);
         },
-        (progress) => {
-          console.log('Image texture loading progress:', progress);
-        },
+        undefined,
         (error) => {
           logger.error('Failed to load image texture', error);
         },

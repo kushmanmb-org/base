@@ -27,10 +27,6 @@ class KVManager {
 
   private async getClient(): Promise<RedisType> {
     if (!this.client) {
-      console.log(
-        'creating new redis client: ',
-        'url' in this.connectionArg ? this.connectionArg.url : this.connectionArg.host,
-      );
       if (!this.connectionArg) {
         throw new Error('No URL or options provided to KVManager');
       }
@@ -45,15 +41,11 @@ class KVManager {
           });
         }
 
-        console.log('redis client created', this.client);
-
-        console.log(
-          `pinging ${
-            'url' in this.connectionArg ? this.connectionArg.url : this.connectionArg.host
-          }`,
-        );
         const pingRes = await this.client.ping();
-        console.log('ping response', pingRes);
+        logger.info('Redis client created and connected', { 
+          connection: 'url' in this.connectionArg ? this.connectionArg.url : this.connectionArg.host,
+          pingResponse: pingRes 
+        });
       } catch (err) {
         logger.error('KV connection failed', err);
         throw new Error(`Failed to connect to KV: ${err}`);
