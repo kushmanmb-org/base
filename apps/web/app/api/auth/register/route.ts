@@ -58,7 +58,7 @@ export async function POST(request: NextRequest) {
 
     // For now, we'll just simulate a successful registration
     // This is a placeholder implementation
-    console.log('User registration attempt:', { username, email });
+    logger.info('User registration attempt', { username, email });
 
     return NextResponse.json(
       {

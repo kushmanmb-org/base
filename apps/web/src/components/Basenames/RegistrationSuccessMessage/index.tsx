@@ -40,7 +40,7 @@ export default function RegistrationSuccessMessage() {
         setPopupMessage(`${error.message}`);
         logError(error, 'Error claiming USDC');
       });
-  }, [address]);
+  }, [address, logError]);
 
   const closePopup = useCallback(() => setPopupMessage(null), []);
 
