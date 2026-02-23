@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { logger } from 'apps/web/src/utils/logger';
 
 type RegistrationBody = {
   username: string;
@@ -70,7 +71,7 @@ export async function POST(request: NextRequest) {
       { status: 201 }
     );
   } catch (error) {
-    console.error('Registration error:', error);
+    logger.error('Registration error', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

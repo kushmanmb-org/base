@@ -9,6 +9,7 @@ import { TitleLevel } from 'apps/web/src/components/base-org/typography/TitleRed
 import Text from 'apps/web/src/components/base-org/typography/TextRedesign';
 import { TextVariant } from 'apps/web/src/components/base-org/typography/TextRedesign/types';
 import NextImage from 'next/image';
+import { logger } from 'apps/web/src/utils/logger';
 
 type CardProps = {
   title: string;
@@ -178,13 +179,13 @@ export const useImageTexture = (imagePath: string) => {
           console.log('Image texture loading progress:', progress);
         },
         (error) => {
-          console.error('Failed to load image texture:', error);
+          logger.error('Failed to load image texture', error);
         },
       );
     };
 
     img.onerror = (error) => {
-      console.error('Failed to load image for dimensions:', error);
+      logger.error('Failed to load image for dimensions', error);
       setImageDimensions({ width: 1, height: 1 });
     };
 

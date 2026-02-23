@@ -55,10 +55,7 @@ class KVManager {
         const pingRes = await this.client.ping();
         console.log('ping response', pingRes);
       } catch (err) {
-        if (!isDevelopment) {
-          logger.error('KV connection failed', err);
-        }
-        console.error(err);
+        logger.error('KV connection failed', err);
         throw new Error(`Failed to connect to KV: ${err}`);
       }
     }
@@ -72,10 +69,7 @@ class KVManager {
         const pingRes = await this.client.ping();
         return pingRes;
       } catch (err) {
-        if (!isDevelopment) {
-          logger.error('Failed to scan keys', err);
-        }
-        console.error(err);
+        logger.error('Failed to ping KV', err);
         throw new Error(`Failed to ping: ${err}`);
       }
     }
@@ -97,10 +91,7 @@ class KVManager {
 
       return { cursor: newCursor, elements };
     } catch (err) {
-      if (!isDevelopment) {
-        logger.error('Failed to scan keys', err);
-      }
-      console.error(err);
+      logger.error('Failed to scan keys', err);
       throw new Error(`Failed to scan keys: ${err}`);
     }
   }
@@ -111,10 +102,7 @@ class KVManager {
       const value = await client.get(key);
       return value ? (JSON.parse(value) as T) : null;
     } catch (err) {
-      if (!isDevelopment) {
-        logger.error('Failed to get key', err);
-      }
-      console.error(err);
+      logger.error('Failed to get key', err);
       throw new Error(`Failed to get key: ${err}`);
     }
   }
@@ -144,10 +132,7 @@ class KVManager {
         return await client.set(key, stringifiedValue, 'EX', options.ex);
       }
     } catch (err) {
-      if (!isDevelopment) {
-        logger.error('Failed to set key', err);
-      }
-      console.error(err);
+      logger.error('Failed to set key', err);
       throw new Error(`Failed to set key: ${err}`);
     }
   }
@@ -158,10 +143,7 @@ class KVManager {
       const result = await client.incr(key);
       return result;
     } catch (err) {
-      if (!isDevelopment) {
-        logger.error('Failed to increment key', err);
-      }
-      console.error(err);
+      logger.error('Failed to increment key', err);
       throw new Error(`Failed to increment key: ${err}`);
     }
   }

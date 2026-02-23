@@ -206,11 +206,11 @@ export default function UsernameProfileSectionHeatmap() {
             throw new Error(`API Error: ${data.message}`);
           }
         } else {
-          console.error('Unexpected API response structure:', json);
+          logger.error('Unexpected API response structure', json);
           return [];
         }
       } catch (e) {
-        console.error('Error fetching transactions:', e);
+        logger.error('Error fetching transactions', e);
         throw e;
       }
     },

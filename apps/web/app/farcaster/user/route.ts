@@ -1,9 +1,10 @@
 import { NextResponse } from 'next/server';
+import { logger } from 'apps/web/src/utils/logger';
 
 const API_URL = 'https://api.neynar.com/v2/farcaster/user/bulk';
 const API_KEY = process.env.NEYNAR_API_KEY;
 
-if (!API_KEY) console.error('NEYNAR_API_KEY required');
+if (!API_KEY) logger.error('NEYNAR_API_KEY required', new Error('Missing NEYNAR_API_KEY'));
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
