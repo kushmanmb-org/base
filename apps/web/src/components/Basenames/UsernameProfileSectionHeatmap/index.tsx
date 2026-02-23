@@ -46,39 +46,51 @@ type Transaction = {
 };
 
 export default function UsernameProfileSectionHeatmap() {
-  // The ref/effect here are a kinda jank approach to reaching into the heatmap library's rendered dom and modifying individual rect attributes.
   const containerRef = useRef<HTMLDivElement>(null);
+  
+  // Optimized: Use MutationObserver instead of polling for better performance
   useEffect(() => {
     const containerElement = containerRef.current;
     if (!containerElement) return;
 
-    let attempts = 0;
-    const maxAttempts = 50; // Limit polling attempts to prevent infinite loops
-
-    const pollForRects = () => {
+    const updateRects = () => {
       const rects = containerElement.querySelectorAll('rect');
-      attempts++;
-      
       if (rects.length > 0) {
         rects.forEach((rect) => {
           rect.setAttribute('rx', '2');
           rect.setAttribute('ry', '2');
         });
-        clearInterval(timerId);
-
-        // this line ensures that if the element is scrollable it will be all the way right (showing newest cal data)
+        // Scroll to show newest calendar data
         containerElement.scrollLeft = containerElement.scrollWidth;
-      } else if (attempts >= maxAttempts) {
-        // Stop polling after max attempts to prevent indefinite polling
-        clearInterval(timerId);
+        return true;
       }
+      return false;
     };
-    
-    // Reduced polling frequency from 100ms to 200ms (reduced from 10x per second to 5x per second)
-    const timerId = setInterval(pollForRects, 200);
-    
+
+    // Try immediate update first
+    if (updateRects()) {
+      return;
+    }
+
+    // Use MutationObserver to detect when rects are added to DOM
+    const observer = new MutationObserver((mutations) => {
+      for (const mutation of mutations) {
+        if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+          if (updateRects()) {
+            observer.disconnect();
+            break;
+          }
+        }
+      }
+    });
+
+    observer.observe(containerElement, {
+      childList: true,
+      subtree: true,
+    });
+
     return () => {
-      clearInterval(timerId);
+      observer.disconnect();
     };
   }, []);
 
@@ -308,7 +320,11 @@ export default function UsernameProfileSectionHeatmap() {
         const filteredSepoliaTransactions = filterTransactions(sepoliaTransactions, [addrs]);
 
         // Filter and deduplicate internal Base transactions using Set for O(n) lookup instead of O(n²)
-        const baseTransactionHashes = new Set(baseTransactions.map((tx) => tx.hash));
+        // Optimized: Build Set directly without intermediate array
+        const baseTransactionHashes = new Set<string>();
+        for (const tx of baseTransactions) {
+          baseTransactionHashes.add(tx.hash);
+        }
         const filteredBaseInternalTransactions = baseInternalTransactions.filter(
           (tx) =>
             tx.from.toLowerCase() === addrs.toLowerCase() && !baseTransactionHashes.has(tx.hash),
@@ -320,24 +336,22 @@ export default function UsernameProfileSectionHeatmap() {
           ...filteredBaseInternalTransactions,
         );
 
-        allEthereumDeployments = [
-          ...allEthereumDeployments,
-          ...filteredEthereumTransactions
-            .filter((tx) => tx.input?.startsWith('0x60806040'))
-            .map((tx) => tx.hash),
-        ];
-        allBaseDeployments = [
-          ...allBaseDeployments,
-          ...filteredBaseTransactions
-            .filter((tx) => tx.input.includes('60806040'))
-            .map((tx) => tx.hash),
-        ];
-        allSepoliaDeployments = [
-          ...allSepoliaDeployments,
-          ...filteredSepoliaTransactions
-            .filter((tx) => tx.input.includes('60806040'))
-            .map((tx) => tx.hash),
-        ];
+        // Optimized: Single pass to extract deployment hashes without intermediate arrays
+        for (const tx of filteredEthereumTransactions) {
+          if (tx.input?.startsWith('0x60806040')) {
+            allEthereumDeployments.push(tx.hash);
+          }
+        }
+        for (const tx of filteredBaseTransactions) {
+          if (tx.input?.startsWith('0x60806040')) {
+            allBaseDeployments.push(tx.hash);
+          }
+        }
+        for (const tx of filteredSepoliaTransactions) {
+          if (tx.input?.startsWith('0x60806040')) {
+            allSepoliaDeployments.push(tx.hash);
+          }
+        }
 
         if (allTransactions.length === 0) {
           return;
@@ -358,36 +372,51 @@ export default function UsernameProfileSectionHeatmap() {
         setCurrentStreak(currentStreakDays);
         setActivityPeriod(activity);
 
-        setTokenSwapCount(
-          allTransactions.filter(
-            (tx) =>
-              ((tx.functionName &&
-                SWAP_FUNCTION_NAMES.some((fn) => tx.functionName?.includes(fn))) ??
-                tx.to === UNISWAP_ROUTER) ||
-              tx.to === AERODROME_ROUTER ||
-              tx.to === ONEINCH_ROUTER,
-          ).length,
-        );
-
-        // ENS count calculation
-        setEnsCount(
-          allTransactions.filter((tx) =>
-            [
-              ETH_REGISTRAR_CONTROLLER_1,
-              ETH_REGISTRAR_CONTROLLER_2,
-              BASENAMES_REGISTRAR_CONTROLLER,
-              BASENAMES_EA_REGISTRAR_CONTROLLER,
-            ].includes(tx.to),
-          ).length,
-        );
-
-        setBridgeCount(allTransactions.filter((tx) => bridges.has(tx.to)).length);
-
-        setLendCount(
-          allTransactions.filter(
-            (tx) => lendBorrowEarn.has(tx.to) || tx.from === MOONWELL_WETH_UNWRAPPER,
-          ).length,
-        );
+        // Optimized: Single pass through allTransactions to calculate all counts
+        let tokenSwapCount = 0;
+        let ensCount = 0;
+        let bridgeCount = 0;
+        let lendCount = 0;
+        
+        const ensAddresses = [
+          ETH_REGISTRAR_CONTROLLER_1,
+          ETH_REGISTRAR_CONTROLLER_2,
+          BASENAMES_REGISTRAR_CONTROLLER,
+          BASENAMES_EA_REGISTRAR_CONTROLLER,
+        ];
+        
+        for (const tx of allTransactions) {
+          // Token swap count
+          if (
+            ((tx.functionName &&
+              SWAP_FUNCTION_NAMES.some((fn) => tx.functionName?.includes(fn))) ??
+              tx.to === UNISWAP_ROUTER) ||
+            tx.to === AERODROME_ROUTER ||
+            tx.to === ONEINCH_ROUTER
+          ) {
+            tokenSwapCount++;
+          }
+          
+          // ENS count
+          if (ensAddresses.includes(tx.to)) {
+            ensCount++;
+          }
+          
+          // Bridge count
+          if (bridges.has(tx.to)) {
+            bridgeCount++;
+          }
+          
+          // Lend count
+          if (lendBorrowEarn.has(tx.to) || tx.from === MOONWELL_WETH_UNWRAPPER) {
+            lendCount++;
+          }
+        }
+        
+        setTokenSwapCount(tokenSwapCount);
+        setEnsCount(ensCount);
+        setBridgeCount(bridgeCount);
+        setLendCount(lendCount);
 
         setBuildCount(
           allEthereumDeployments.length + allBaseDeployments.length + allSepoliaDeployments.length,
