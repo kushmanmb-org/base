@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { isAddress } from 'viem';
+import { logger } from 'apps/web/src/utils/logger';
 
 const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY;
 const TALENT_PROTOCOL_API_KEY = process.env.TALENT_PROTOCOL_API_KEY;
@@ -60,7 +61,7 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: responseData }, { status: externalResponse.status });
     }
   } catch (error) {
-    console.error('Error in API proxy:', error);
+    logger.error('Error in API proxy', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

@@ -199,18 +199,18 @@ export default function UsernameProfileSectionHeatmap() {
           return []; // Return an empty array for no transactions
         } else if (data.status === '0' && data.message === 'Exception') {
           if (retryCount > 0) {
-            console.log(`API returned an exception. Retrying... (${retryCount} attempts left)`);
+            logger.info(`API returned an exception. Retrying... (${retryCount} attempts left)`);
             await new Promise((resolve) => setTimeout(resolve, 2000));
             return await fetchTransactions(apiUrl, retryCount - 1);
           } else {
             throw new Error(`API Error: ${data.message}`);
           }
         } else {
-          console.error('Unexpected API response structure:', json);
+          logger.error('Unexpected API response structure', json);
           return [];
         }
       } catch (e) {
-        console.error('Error fetching transactions:', e);
+        logger.error('Error fetching transactions', e);
         throw e;
       }
     },
