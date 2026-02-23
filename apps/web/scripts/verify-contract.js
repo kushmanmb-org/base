@@ -7,13 +7,23 @@
  * 
  * Usage:
  *   npm run verify -- \
- *     --address 0x1234567890abcdef1234567890abcdef12345678 \
+ *     --address <0x-address-or-ens-name> \
  *     --source ./contracts/MyContract.sol \
  *     --name MyContract \
  *     --compiler v0.8.20+commit.a1b79de6 \
  *     --network sepolia \
  *     --optimization 1 \
  *     --runs 200
+ * 
+ * Examples:
+ *   # Using hex address
+ *   npm run verify -- --address 0x1234...5678 --source ./contracts/MyContract.sol ...
+ * 
+ *   # Using ENS name
+ *   npm run verify -- --address kushmanmb.eth --source ./contracts/MyContract.sol ...
+ * 
+ *   # Using Basename
+ *   npm run verify -- --address yaketh.base.eth --source ./contracts/MyContract.sol ...
  */
 
 const fs = require('fs');
@@ -68,7 +78,7 @@ function validateArgs() {
     console.error('Error: Missing required arguments:', missing.join(', '));
     console.error('\nUsage:');
     console.error('  npm run verify -- \\');
-    console.error('    --address <contract-address> \\');
+    console.error('    --address <contract-address-or-ens-name> \\');
     console.error('    --source <path-to-source-file> \\');
     console.error('    --name <contract-name> \\');
     console.error('    --compiler <compiler-version> \\');
@@ -76,6 +86,10 @@ function validateArgs() {
     console.error('    [--optimization <0|1>] \\');
     console.error('    [--runs <number>] \\');
     console.error('    [--constructor-args <hex-encoded-args>]');
+    console.error('\nAddress can be:');
+    console.error('  - Hex address: 0x1234567890abcdef1234567890abcdef12345678');
+    console.error('  - ENS name: kushmanmb.eth, yaketh.eth');
+    console.error('  - Basename: kushmanmb.base.eth, yaketh.base.eth');
     console.error('\nSupported networks:', Object.keys(NETWORKS).join(', '));
     process.exit(1);
   }
