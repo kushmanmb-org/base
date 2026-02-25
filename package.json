@@ -12,6 +12,7 @@
     "test:e2e:ui": "yarn workspace @app/web test:e2e:ui",
     "test:e2e:debug": "yarn workspace @app/web test:e2e:debug",
     "test:e2e:headed": "yarn workspace @app/web test:e2e:headed",
+    "deploy": "node contracts/deploy.js",
     "verify": "node apps/web/scripts/verify-contract.js",
     "postinstall": "sh -c 'if [ command -v ./node_modules/.bin/husky ]; then ./node_modules/.bin/husky install; fi;'",
     "prepublishOnly": "pinst --disable",
