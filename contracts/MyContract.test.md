@@ -100,10 +100,10 @@ function claim(address account, uint256 totalAmount, bytes32[] calldata proof) p
 ## Example Merkle Tree Construction
 
 ```javascript
-// Example using ethers.js and merkletreejs
+// Example using ethers.js v6 and merkletreejs
 
 const { MerkleTree } = require('merkletreejs');
-const { keccak256 } = require('ethers');
+const { ethers } = require('ethers');
 
 // Define eligible accounts and amounts
 const claims = [
@@ -112,18 +112,23 @@ const claims = [
   { account: '0x3333333333333333333333333333333333333333', amount: '500000000000000000' },  // 0.5 ETH
 ];
 
-// Create leaf nodes
-const leaves = claims.map(claim => 
-  keccak256(
-    ethers.solidityPacked(
-      ['bytes32'],
-      [keccak256(ethers.AbiCoder.defaultAbiCoder().encode(['address', 'uint256'], [claim.account, claim.amount]))]
-    )
-  )
-);
+// Create leaf nodes - MUST match the Solidity implementation:
+// bytes32 leaf = keccak256(bytes.concat(keccak256(abi.encode(account, totalAmount))));
+const leaves = claims.map(claim => {
+  // First encode account and amount
+  const encoded = ethers.AbiCoder.defaultAbiCoder().encode(
+    ['address', 'uint256'], 
+    [claim.account, claim.amount]
+  );
+  // Hash the encoded data
+  const firstHash = ethers.keccak256(encoded);
+  // Hash again (double hashing)
+  const leaf = ethers.keccak256(firstHash);
+  return leaf;
+});
 
-// Create Merkle tree
-const tree = new MerkleTree(leaves, keccak256, { sortPairs: true });
+// Create Merkle tree with sorted pairs (matching Solidity's _hashPair logic)
+const tree = new MerkleTree(leaves, ethers.keccak256, { sortPairs: true });
 
 // Get root
 const root = tree.getHexRoot();
@@ -134,6 +139,26 @@ const proof = tree.getHexProof(leaf);
 
 console.log('Merkle Root:', root);
 console.log('Proof:', proof);
+
+// Verify proof off-chain
+const isValid = tree.verify(proof, leaf, root);
+console.log('Proof is valid:', isValid);
+```
+
+### Alternative: Helper function for leaf generation
+
+```javascript
+function generateLeaf(account, amount) {
+  const encoded = ethers.AbiCoder.defaultAbiCoder().encode(
+    ['address', 'uint256'], 
+    [account, amount]
+  );
+  const firstHash = ethers.keccak256(encoded);
+  return ethers.keccak256(firstHash);
+}
+
+// Usage
+const leaf = generateLeaf('0x1111111111111111111111111111111111111111', '1000000000000000000');
 ```
 
 ## Integration Example
@@ -173,11 +198,25 @@ The implementation includes several gas optimizations:
 
 ## Security Considerations
 
-1. **Reentrancy Protection**: The function follows checks-effects-interactions pattern
+1. **Reentrancy Protection**: The function follows checks-effects-interactions pattern. The `hasClaimed` state is updated before the external call, preventing reentrancy attacks.
 2. **Double-claim Prevention**: Uses `hasClaimed` mapping to prevent duplicate claims
 3. **Input Validation**: Validates all inputs before processing
 4. **Merkle Proof Verification**: Uses standard sorted-pair hashing for proof verification
 5. **Access Control**: Only owner can set merkle root and withdraw funds
+6. **Third-Party Claiming**: The claim function allows anyone to trigger a claim on behalf of an eligible account. This is intentional and follows common airdrop patterns where users may not have gas or third-party services can batch-process claims. The funds always go to the eligible account, not the caller.
+
+## Important Design Notes
+
+### Third-Party Claiming
+The `claim()` function can be called by anyone (not just the account that will receive the funds). This design choice enables:
+- Gas-less claiming: Third parties can pay gas fees to claim on behalf of users
+- Batch processing: Services can process multiple claims efficiently
+- No user interaction required: Claims can be triggered without users knowing about them
+
+The security of this model relies on:
+- Funds always go to the `account` parameter (verified by Merkle proof)
+- Each account can only claim once (`hasClaimed` mapping)
+- The `account` and `totalAmount` are part of the Merkle proof verification
 
 ## Related Functions
 

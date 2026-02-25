@@ -48,6 +48,8 @@ contract MyContract {
     
     /**
      * @notice Claims tokens/ETH for an account using Merkle proof verification
+     * @dev This function allows anyone to trigger a claim on behalf of an eligible account.
+     *      This is a common pattern for airdrops where third parties can claim on behalf of users.
      * @param account The address that will receive the claim
      * @param totalAmount The total amount to be claimed
      * @param proof The Merkle proof to verify eligibility
@@ -65,7 +67,8 @@ contract MyContract {
         bytes32 leaf = keccak256(bytes.concat(keccak256(abi.encode(account, totalAmount))));
         require(_verifyProof(proof, merkleRoot, leaf), "Invalid proof");
         
-        // Mark as claimed
+        // Mark as claimed before transfer (checks-effects-interactions pattern)
+        // This prevents reentrancy even if account is a contract
         hasClaimed[account] = true;
         
         // Transfer the amount
@@ -115,10 +118,13 @@ contract MyContract {
     
     /**
      * @notice Allows the owner to withdraw ETH from the contract
+     * @dev Uses checks-effects-interactions pattern. Since owner is trusted,
+     *      reentrancy risk is minimal, but pattern is followed for consistency.
      * @param amount The amount to withdraw
      */
     function withdraw(uint256 amount) public onlyOwner {
         require(amount <= address(this).balance, "Insufficient balance");
+        // Note: owner is a trusted address set in constructor
         (bool success, ) = owner.call{value: amount}("");
         require(success, "Withdrawal failed");
     }
