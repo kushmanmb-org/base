@@ -73,6 +73,9 @@ contract MyContract {
         
         // Transfer the amount
         require(address(this).balance >= totalAmount, "Insufficient contract balance");
+        // Using call instead of transfer/send for forward compatibility
+        // transfer() has a 2300 gas limit which is an anti-pattern
+        // The checks-effects-interactions pattern above protects against reentrancy
         (bool success, ) = account.call{value: totalAmount}("");
         require(success, "Transfer failed");
         
@@ -125,6 +128,7 @@ contract MyContract {
     function withdraw(uint256 amount) public onlyOwner {
         require(amount <= address(this).balance, "Insufficient balance");
         // Note: owner is a trusted address set in constructor
+        // Using call instead of transfer for forward compatibility
         (bool success, ) = owner.call{value: amount}("");
         require(success, "Withdrawal failed");
     }

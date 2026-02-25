@@ -204,6 +204,7 @@ The implementation includes several gas optimizations:
 4. **Merkle Proof Verification**: Uses standard sorted-pair hashing for proof verification
 5. **Access Control**: Only owner can set merkle root and withdraw funds
 6. **Third-Party Claiming**: The claim function allows anyone to trigger a claim on behalf of an eligible account. This is intentional and follows common airdrop patterns where users may not have gas or third-party services can batch-process claims. The funds always go to the eligible account, not the caller.
+7. **ETH Transfer Method**: Uses `call` instead of `transfer()` or `send()` for ETH transfers. This is the modern Solidity best practice as `transfer()` has a 2300 gas limit which can break with future EVM changes. The checks-effects-interactions pattern protects against reentrancy.
 
 ## Important Design Notes
 
