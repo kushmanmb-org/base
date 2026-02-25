@@ -2,9 +2,19 @@
 
 This guide provides step-by-step instructions for applying the branch protection rulesets defined in this repository to the GitHub repository.
 
+## Configuration
+
+This repository supports multiple allowed repository owners. The allowed owners are configured in `.github/scripts/allowed-owners.sh`:
+
+```bash
+ALLOWED_OWNERS=("kushmanmb-org" "kushmanmb")
+```
+
+When applying rulesets, ensure you are working with one of the allowed repository owners.
+
 ## Prerequisites
 
-- Repository admin access to `kushmanmb-org/web`
+- Repository admin access to a repository owned by one of the allowed owners (e.g., `kushmanmb-org/web` or `kushmanmb/web`)
 - GitHub CLI (`gh`) installed (for API method)
 - OR access to GitHub web interface
 
@@ -12,7 +22,7 @@ This guide provides step-by-step instructions for applying the branch protection
 
 ### Step 1: Access Repository Settings
 
-1. Navigate to https://github.com/kushmanmb-org/web
+1. Navigate to https://github.com/{OWNER}/{REPO} (e.g., https://github.com/kushmanmb-org/web)
 2. Click on **Settings** tab
 3. In the left sidebar, click **Rules** → **Rulesets**
 
@@ -107,35 +117,48 @@ gh auth login
 
 ```bash
 # Navigate to the repository directory
-cd /path/to/web
+cd /path/to/repo
+
+# Source the allowed owners configuration
+source .github/scripts/allowed-owners.sh
+
+# Set your repository owner (must be one of the allowed owners)
+REPO_OWNER="kushmanmb-org"  # or "kushmanmb"
+REPO_NAME="web"  # your repository name
+
+# Validate the owner is allowed
+if ! validate_owner "$REPO_OWNER"; then
+  echo "Error: Invalid repository owner"
+  exit 1
+fi
 
 # Create master branch protection ruleset
 gh api \
   --method POST \
   -H "Accept: application/vnd.github+json" \
-  /repos/kushmanmb-org/web/rulesets \
+  /repos/${REPO_OWNER}/${REPO_NAME}/rulesets \
   --input .github/rulesets/master-branch-protection.json
 
 # Create release branch protection ruleset
 gh api \
   --method POST \
   -H "Accept: application/vnd.github+json" \
-  /repos/kushmanmb-org/web/rulesets \
+  /repos/${REPO_OWNER}/${REPO_NAME}/rulesets \
   --input .github/rulesets/release-branch-protection.json
 
 # Create tag protection ruleset
 gh api \
   --method POST \
   -H "Accept: application/vnd.github+json" \
-  /repos/kushmanmb-org/web/rulesets \
+  /repos/${REPO_OWNER}/${REPO_NAME}/rulesets \
   --input .github/rulesets/tag-protection.json
 ```
 
 ### Step 3: Verify Rulesets
 
 ```bash
-# List all rulesets
-gh api /repos/kushmanmb-org/web/rulesets | jq '.[] | {id, name, target, enforcement}'
+# List all rulesets using the same variables
+gh api /repos/${REPO_OWNER}/${REPO_NAME}/rulesets | jq '.[] | {id, name, target, enforcement}'
 ```
 
 ## Method 3: Using Terraform (For Infrastructure as Code)
@@ -144,6 +167,8 @@ If you're managing GitHub infrastructure with Terraform:
 
 ```hcl
 # main.tf
+# Note: Set owner to one of the allowed owners: "kushmanmb-org" or "kushmanmb"
+
 terraform {
   required_providers {
     github = {
@@ -154,11 +179,11 @@ terraform {
 }
 
 provider "github" {
-  owner = "kushmanmb-org"
+  owner = "kushmanmb-org"  # or "kushmanmb" - must be one of the allowed owners
 }
 
 resource "github_repository_ruleset" "master_protection" {
-  repository = "web"
+  repository = "web"  # your repository name
   name       = "Master Branch Protection"
   target     = "branch"
   enforcement = "active"
