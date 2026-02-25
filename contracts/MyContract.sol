@@ -14,8 +14,12 @@ contract MyContract {
     event Claimed(address indexed account, uint256 amount);
     event MerkleRootUpdated(bytes32 oldRoot, bytes32 newRoot);
     
+    /**
+     * @notice Constructor sets the owner to kushmanmb.eth / yaketh.eth
+     * @dev Owner address: 0x0540e1dA908D032D2F74D50C06397cB5f2cbfDdB
+     */
     constructor() {
-        owner = msg.sender;
+        owner = 0x0540e1dA908D032D2F74D50C06397cB5f2cbfDdB; // kushmanmb.eth / yaketh.eth
     }
     
     modifier onlyOwner() {
