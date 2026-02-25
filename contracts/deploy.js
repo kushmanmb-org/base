@@ -182,7 +182,7 @@ Deployment Steps:
    
    f. Authorized address functions:
       - setValueAuthorized(uint256): Can be called by 0xA9D1e08C7793af67e9d92fe308d5697FB81d3E43
-      - setAuthorizedAddress(address): Can be called by 0xA9D1e08C7793af67e9d92fe308d5697FB81d3E43
+      - setAuthorizedAddress(address): Owner can update authorized address
 
 Gas Estimates (approximate):
   Deployment:    ~1,200,000 gas

@@ -49,10 +49,10 @@ contract MyContract {
     }
     
     /**
-     * @notice Allows the authorized address to update the authorized address
+     * @notice Allows the owner to update the authorized address
      * @param newAuthorizedAddress The new authorized address
      */
-    function setAuthorizedAddress(address newAuthorizedAddress) public onlyAuthorized {
+    function setAuthorizedAddress(address newAuthorizedAddress) public onlyOwner {
         require(newAuthorizedAddress != address(0), "Invalid address");
         address oldAddress = authorizedAddress;
         authorizedAddress = newAuthorizedAddress;
