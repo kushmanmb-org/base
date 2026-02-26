@@ -34,12 +34,19 @@ export async function GET(req: NextRequest) {
   const ZERO_X_API_KEY = process.env.ZERO_X_API_KEY;
 
   if (!ZERO_X_API_KEY) {
-    logger.error('ZERO_X_API_KEY environment variable is not set');
+    logger.error('0x API key environment variable is not set');
     return NextResponse.json({ error: 'API key not configured' }, { status: 500 });
   }
 
   try {
-    const apiUrl = `https://api.0x.org/gasless/quote?chainId=${chainId}&sellToken=${sellToken}&buyToken=${buyToken}&sellAmount=${sellAmount}&taker=${taker}`;
+    const params = new URLSearchParams({
+      chainId,
+      sellToken,
+      buyToken,
+      sellAmount,
+      taker,
+    });
+    const apiUrl = `https://api.0x.org/gasless/quote?${params.toString()}`;
 
     const externalResponse = await fetch(apiUrl, {
       method: 'GET',
