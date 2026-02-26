@@ -32,7 +32,7 @@ The following packages were updated:
 | diff | 4.0.2 | 4.0.4 |
 | form-data | 4.0.2 | 4.0.5 |
 | h3 | 1.15.1 | 1.15.5 |
-| hono | 4.8.5 | 4.11.9 |
+| hono | 4.8.5 | 4.12.0 |
 | js-yaml | 3.14.1 | 3.14.2 |
 | jws | 3.2.2 | 3.2.3 |
 | mdast-util-to-hast | 13.2.0 | 13.2.1 |
