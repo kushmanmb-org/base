@@ -52,14 +52,17 @@ export async function GET(req: NextRequest) {
     const contentType = externalResponse.headers.get('content-type');
     let responseData;
     if (contentType?.includes('application/json')) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       responseData = await externalResponse.json();
     } else {
       responseData = await externalResponse.text();
     }
 
     if (externalResponse.ok) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       return NextResponse.json({ data: responseData });
     } else {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       return NextResponse.json({ error: responseData }, { status: externalResponse.status });
     }
   } catch (error) {
