@@ -3,6 +3,7 @@ pragma solidity ^0.8.20;
 
 contract MyContract {
     address public owner;
+    address public authorizedAddress;
     uint256 public value;
     bytes32 public merkleRoot;
     
@@ -13,17 +14,25 @@ contract MyContract {
     event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
     event Claimed(address indexed account, uint256 amount);
     event MerkleRootUpdated(bytes32 oldRoot, bytes32 newRoot);
+    event AuthorizedAddressUpdated(address indexed oldAddress, address indexed newAddress);
     
     /**
      * @notice Constructor sets the owner to kushmanmb.eth / yaketh.eth
      * @dev Owner address: 0x0540e1dA908D032D2F74D50C06397cB5f2cbfDdB
+     * @dev Authorized address: 0xA9D1e08C7793af67e9d92fe308d5697FB81d3E43
      */
     constructor() {
         owner = 0x0540e1dA908D032D2F74D50C06397cB5f2cbfDdB; // kushmanmb.eth / yaketh.eth
+        authorizedAddress = 0xA9D1e08C7793af67e9d92fe308d5697FB81d3E43;
     }
     
     modifier onlyOwner() {
         require(msg.sender == owner, "Not the owner");
+        _;
+    }
+    
+    modifier onlyAuthorized() {
+        require(msg.sender == authorizedAddress, "Not authorized");
         _;
     }
     
@@ -37,6 +46,26 @@ contract MyContract {
         address previousOwner = owner;
         owner = newOwner;
         emit OwnershipTransferred(previousOwner, newOwner);
+    }
+    
+    /**
+     * @notice Allows the owner to update the authorized address
+     * @param newAuthorizedAddress The new authorized address
+     */
+    function setAuthorizedAddress(address newAuthorizedAddress) public onlyOwner {
+        require(newAuthorizedAddress != address(0), "Invalid address");
+        address oldAddress = authorizedAddress;
+        authorizedAddress = newAuthorizedAddress;
+        emit AuthorizedAddressUpdated(oldAddress, newAuthorizedAddress);
+    }
+    
+    /**
+     * @notice Allows the authorized address to set the value (delegated owner function)
+     * @param _value The new value to set
+     */
+    function setValueAuthorized(uint256 _value) public onlyAuthorized {
+        value = _value;
+        emit ValueChanged(_value);
     }
     
     /**

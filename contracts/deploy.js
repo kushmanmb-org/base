@@ -82,6 +82,7 @@ DEPLOYMENT METHODS:
    ✓ Deploy using "Injected Provider - MetaMask"
    ✓ No constructor arguments needed
    ✓ Owner is hardcoded: 0x0540e1dA908D032D2F74D50C06397cB5f2cbfDdB
+   ✓ Authorized Address is hardcoded: 0xA9D1e08C7793af67e9d92fe308d5697FB81d3E43
 
 2. FOUNDRY CAST (For advanced users)
    $ forge create contracts/MyContract.sol:MyContract \\
@@ -129,11 +130,12 @@ Network Details:
   Currency:  ${network.currency}
 
 Contract Details:
-  Name:       MyContract
-  File:       contracts/MyContract.sol
-  Compiler:   Solidity ^0.8.20
-  Owner:      0x0540e1dA908D032D2F74D50C06397cB5f2cbfDdB
-  License:    MIT
+  Name:               MyContract
+  File:               contracts/MyContract.sol
+  Compiler:           Solidity ^0.8.20
+  Owner:              0x0540e1dA908D032D2F74D50C06397cB5f2cbfDdB
+  Authorized Address: 0xA9D1e08C7793af67e9d92fe308d5697FB81d3E43
+  License:            MIT
 
 Deployment Steps:
 
@@ -177,6 +179,10 @@ Deployment Steps:
    e. Set Merkle root (only owner can do this):
       - Call setMerkleRoot(bytes32 _merkleRoot)
       - Use address: 0x0540e1dA908D032D2F74D50C06397cB5f2cbfDdB
+   
+   f. Authorized address functions:
+      - setValueAuthorized(uint256): Can be called by 0xA9D1e08C7793af67e9d92fe308d5697FB81d3E43
+      - setAuthorizedAddress(address): Owner can update authorized address
 
 Gas Estimates (approximate):
   Deployment:    ~1,200,000 gas
@@ -214,7 +220,8 @@ Quick Start:
   4. Verify the contract: npm run verify -- [options]
 
 Contract Info:
-  File:   contracts/MyContract.sol
-  Owner:  0x0540e1dA908D032D2F74D50C06397cB5f2cbfDdB (kushmanmb.eth / yaketh.eth)
+  File:              contracts/MyContract.sol
+  Owner:             0x0540e1dA908D032D2F74D50C06397cB5f2cbfDdB (kushmanmb.eth / yaketh.eth)
+  Authorized Address: 0xA9D1e08C7793af67e9d92fe308d5697FB81d3E43
 `);
 }
