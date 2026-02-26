@@ -85,9 +85,15 @@ DEPLOYMENT METHODS:
    ✓ Authorized Address is hardcoded: 0xA9D1e08C7793af67e9d92fe308d5697FB81d3E43
 
 2. FOUNDRY CAST (For advanced users)
+   ⚠️  SECURITY WARNING: Never expose your private key!
+   ⚠️  Use environment variables or secure key management systems
+   ⚠️  Never commit private keys to version control
+   
    $ forge create contracts/MyContract.sol:MyContract \\
        --rpc-url <RPC_URL> \\
        --private-key <PRIVATE_KEY>
+   
+   Recommended: Use --private-key $PRIVATE_KEY instead of typing it directly
 
 3. MANUAL DEPLOYMENT (Using ethers.js/web3.js)
    See: CONTRACT_DEPLOYMENT_GUIDE.md
@@ -133,8 +139,8 @@ Contract Details:
   Name:               MyContract
   File:               contracts/MyContract.sol
   Compiler:           Solidity ^0.8.20
-  Owner:              0x0540e1dA908D032D2F74D50C06397cB5f2cbfDdB
-  Authorized Address: 0xA9D1e08C7793af67e9d92fe308d5697FB81d3E43
+  Owner:              [Hardcoded in contract - see MyContract.sol]
+  Authorized Address: [Hardcoded in contract - see MyContract.sol]
   License:            MIT
 
 Deployment Steps:
@@ -150,13 +156,26 @@ Deployment Steps:
    h. Select "Injected Provider - MetaMask" as environment
    i. Ensure MetaMask is connected to ${network.name}
    j. Click "Deploy" (no constructor arguments needed)
-   k. Confirm transaction in MetaMask
-   l. Note the deployed contract address
+   k. Note: Owner and authorized addresses are hardcoded in contract
+   l. Confirm transaction in MetaMask
+   m. Note the deployed contract address
 
 2. USING FOUNDRY CAST:
+   ⚠️  SECURITY WARNINGS:
+   • Never type private keys directly in the terminal (they are saved in shell history)
+   • Use environment variables: export PRIVATE_KEY="0x..." then use $PRIVATE_KEY
+   • Consider using --ledger or --trezor for hardware wallet deployment
+   • Never commit private keys to version control
+   
    $ forge create contracts/MyContract.sol:MyContract \\
        --rpc-url ${network.rpcUrl} \\
-       --private-key <YOUR_PRIVATE_KEY> \\
+       --private-key $PRIVATE_KEY \\
+       --optimize --optimizer-runs 200
+   
+   Alternative (hardware wallet):
+   $ forge create contracts/MyContract.sol:MyContract \\
+       --rpc-url ${network.rpcUrl} \\
+       --ledger \\
        --optimize --optimizer-runs 200
 
 3. AFTER DEPLOYMENT:
@@ -178,10 +197,10 @@ Deployment Steps:
    
    e. Set Merkle root (only owner can do this):
       - Call setMerkleRoot(bytes32 _merkleRoot)
-      - Use address: 0x0540e1dA908D032D2F74D50C06397cB5f2cbfDdB
+      - Must use the owner address specified in the contract
    
    f. Authorized address functions:
-      - setValueAuthorized(uint256): Can be called by 0xA9D1e08C7793af67e9d92fe308d5697FB81d3E43
+      - setValueAuthorized(uint256): Can be called by authorized address
       - setAuthorizedAddress(address): Owner can update authorized address
 
 Gas Estimates (approximate):
@@ -192,7 +211,9 @@ Gas Estimates (approximate):
 Notes:
   - Ensure you have sufficient ${network.currency} for gas fees
   - Test on ${networkName === 'mainnet' || networkName === 'base' ? 'testnet first (sepolia or base-sepolia)' : 'this testnet before mainnet'}
-  - Keep your private keys secure
+  - ⚠️  SECURITY: Keep your private keys secure - never commit them or share them
+  - ⚠️  Use hardware wallets (Ledger/Trezor) for mainnet deployments when possible
+  - ⚠️  Store private keys in secure key management systems (not in .env files on servers)
   - Verify contract after deployment for transparency
 `);
 }
@@ -221,7 +242,7 @@ Quick Start:
 
 Contract Info:
   File:              contracts/MyContract.sol
-  Owner:             0x0540e1dA908D032D2F74D50C06397cB5f2cbfDdB (kushmanmb.eth / yaketh.eth)
-  Authorized Address: 0xA9D1e08C7793af67e9d92fe308d5697FB81d3E43
+  Owner:             [Set in contract - see MyContract.sol]
+  Authorized Address: [Set in contract - see MyContract.sol]
 `);
 }
