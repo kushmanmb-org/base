@@ -81,13 +81,12 @@ contract MyContract {
     
     /**
      * @notice Claims tokens/ETH for an account using Merkle proof verification
-     * @dev This function allows anyone to trigger a claim on behalf of an eligible account.
-     *      This is a common pattern for airdrops where third parties can claim on behalf of users.
+     * @dev Only the owner can trigger claims on behalf of eligible accounts.
      * @param account The address that will receive the claim
      * @param totalAmount The total amount to be claimed
      * @param proof The Merkle proof to verify eligibility
      */
-    function claim(address account, uint256 totalAmount, bytes32[] calldata proof) public {
+    function claim(address account, uint256 totalAmount, bytes32[] calldata proof) public onlyOwner {
         // Validate inputs
         require(account != address(0), "Invalid account address");
         require(totalAmount > 0, "Amount must be greater than 0");
