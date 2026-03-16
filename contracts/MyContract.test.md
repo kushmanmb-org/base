@@ -5,7 +5,7 @@ This document provides test scenarios and examples for the `claim` function with
 ## Function Signature
 
 ```solidity
-function claim(address account, uint256 totalAmount, bytes32[] calldata proof) public
+function claim(address account, uint256 totalAmount, bytes32[] calldata proof) public onlyOwner
 ```
 
 ## Test Scenarios
@@ -202,22 +202,13 @@ The implementation includes several gas optimizations:
 2. **Double-claim Prevention**: Uses `hasClaimed` mapping to prevent duplicate claims
 3. **Input Validation**: Validates all inputs before processing
 4. **Merkle Proof Verification**: Uses standard sorted-pair hashing for proof verification
-5. **Access Control**: Only owner can set merkle root and withdraw funds
-6. **Third-Party Claiming**: The claim function allows anyone to trigger a claim on behalf of an eligible account. This is intentional and follows common airdrop patterns where users may not have gas or third-party services can batch-process claims. The funds always go to the eligible account, not the caller.
-7. **ETH Transfer Method**: Uses `call` instead of `transfer()` or `send()` for ETH transfers. This is the modern Solidity best practice as `transfer()` has a 2300 gas limit which can break with future EVM changes. The checks-effects-interactions pattern protects against reentrancy.
+5. **Access Control**: Only owner can set merkle root, withdraw funds, and trigger claims
+6. **ETH Transfer Method**: Uses `call` instead of `transfer()` or `send()` for ETH transfers. This is the modern Solidity best practice as `transfer()` has a 2300 gas limit which can break with future EVM changes. The checks-effects-interactions pattern protects against reentrancy.
 
 ## Important Design Notes
 
 ### Third-Party Claiming
-The `claim()` function can be called by anyone (not just the account that will receive the funds). This design choice enables:
-- Gas-less claiming: Third parties can pay gas fees to claim on behalf of users
-- Batch processing: Services can process multiple claims efficiently
-- No user interaction required: Claims can be triggered without users knowing about them
-
-The security of this model relies on:
-- Funds always go to the `account` parameter (verified by Merkle proof)
-- Each account can only claim once (`hasClaimed` mapping)
-- The `account` and `totalAmount` are part of the Merkle proof verification
+The `claim()` function is restricted to the owner (`onlyOwner`). Only the contract owner can trigger claims on behalf of eligible accounts.
 
 ## Related Functions
 
