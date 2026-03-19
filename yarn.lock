@@ -176,7 +176,7 @@ __metadata:
     jose: ^5.4.1
     jsdom: ^25.0.0
     jsonwebtoken: ^9.0.2
-    kysely: ^0.27.6
+    kysely: ^0.28.12
     motion: ^12.3.1
     next: ^15.5.10
     permissionless: ^0.1.41
@@ -17074,10 +17074,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"kysely@npm:^0.27.6":
-  version: 0.27.6
-  resolution: "kysely@npm:0.27.6"
-  checksum: 537d4950c8e09ca1fbe1c8b7ea8d6152b1edc1bc544e013fa2b8b5e98c6c9d1ab4bd7976c8c1f0e8112c6fb42800a773a8f03a480977b793efd85182f382f5e6
+"kysely@npm:^0.28.12":
+  version: 0.28.13
+  resolution: "kysely@npm:0.28.13"
+  checksum: f7a57806bd9b8678da14e152f634a98b518e867517886a62ef214a8e41f5472c33fc269fcd3790befc6e6e605605d7343a2006fb9a4dd0ff1346aaa4f4c41fb5
   languageName: node
   linkType: hard
 
