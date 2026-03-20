@@ -12746,12 +12746,12 @@ __metadata:
   linkType: hard
 
 "effect@npm:^3.8.4":
-  version: 3.16.13
-  resolution: "effect@npm:3.16.13"
+  version: 3.21.0
+  resolution: "effect@npm:3.21.0"
   dependencies:
     "@standard-schema/spec": ^1.0.0
     fast-check: ^3.23.1
-  checksum: 86bd344f3404523e5b629a5764d19c81afcbe76446bd47fc7e7e3c4cdfc407b5bd780fd0c05376707fac1f84b1ae6b9edc6a0042c488ef7cb0052cc69770c4b7
+  checksum: 20eafb7ce0fe0ed692e56f8db0f99919323ba9edd233b444d195ee777052179fa32d9f5824174e88ce38e7ed0e8c622b5a591060eed5ed2432cd06b0bc835500
   languageName: node
   linkType: hard
 
