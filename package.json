@@ -88,7 +88,7 @@
     "@coinbase/onchaintestkit": "Patched to update MetaMask extension from 12.8.1 to 12.9.0 for GHSA-9cwf-fhxr-4f53"
   },
   "engines": {
-    "node": "24.x"
+    "node": ">=18"
   },
   "packageManager": "yarn@3.5.0",
   "dependencies": {
