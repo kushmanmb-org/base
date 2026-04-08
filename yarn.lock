@@ -4020,11 +4020,11 @@ __metadata:
   linkType: hard
 
 "@hono/node-server@npm:^1.11.1":
-  version: 1.16.0
-  resolution: "@hono/node-server@npm:1.16.0"
+  version: 1.19.13
+  resolution: "@hono/node-server@npm:1.19.13"
   peerDependencies:
     hono: ^4
-  checksum: c169475a336591178c7841d707c11e88982a662e83205a6e521b1a720c1e69030b214c4588a5e67a968cc2dd4efcede164e3ad92dc5eee7ccb5bd2f469023275
+  checksum: 0381b899e30765dfbba6f03333133498dd1111bafcd0be761046e7813a142e1b0e9cd20f2fa377cf3cf9f6c5ce531fc516387aab8f004b9288ad5d5484d331b7
   languageName: node
   linkType: hard
 
