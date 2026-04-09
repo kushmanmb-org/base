@@ -1,0 +1,122 @@
+[
+  {
+    "id": "base-builder-challenge-1",
+    "category": "defi",
+    "curation": "featured",
+    "is_featured": true,
+    "content": {
+      "title": "Base Builder Challenge: DeFi Swap",
+      "short_description": "Complete your first token swap on Base and earn rewards",
+      "full_description": "Join the Base Builder Challenge and complete your first decentralized token swap. This challenge introduces you to DeFi on Base, showcasing low fees and fast transactions. Swap any amount of tokens to complete the challenge and earn an exclusive NFT badge.",
+      "image_url": "/images/challenges/defi-swap.webp",
+      "target_url": "https://base.org/challenges/defi-swap",
+      "cta_text": "Start Swapping",
+      "function_signature": "swap(address,address,uint256,uint256,address,uint256)",
+      "contract_address": "0x1234567890123456789012345678901234567890",
+      "token_id": "1",
+      "token_amount": "1",
+      "creator_name": "Base Team",
+      "creator_image_url": "/images/creators/base-team.webp"
+    }
+  },
+  {
+    "id": "nft-minting-challenge",
+    "category": "nft",
+    "curation": "recommended",
+    "is_featured": false,
+    "content": {
+      "title": "NFT Minting Challenge",
+      "short_description": "Mint your first NFT on Base and join the creator economy",
+      "full_description": "Create and mint your first NFT on Base. Experience the power of low-cost minting on an L2 network. This challenge walks you through the entire NFT creation process, from uploading your art to minting it onchain. Perfect for artists and creators new to Web3.",
+      "image_url": "/images/challenges/nft-minting.webp",
+      "target_url": "https://base.org/challenges/nft-minting",
+      "cta_text": "Mint NFT",
+      "function_signature": "mint(address,string)",
+      "contract_address": "0x2345678901234567890123456789012345678901",
+      "token_id": "0",
+      "token_amount": "1",
+      "creator_name": "Base Creators",
+      "creator_image_url": "/images/creators/base-creators.webp"
+    }
+  },
+  {
+    "id": "onchain-identity-setup",
+    "category": "infra",
+    "curation": "essential",
+    "is_featured": false,
+    "content": {
+      "title": "Set Up Your Onchain Identity",
+      "short_description": "Create your Base name and establish your onchain presence",
+      "full_description": "Establish your identity on Base by registering a Base name. Your Base name is your unique identifier across the Base ecosystem, making it easy for others to find and interact with you. This challenge guides you through the registration process and helps you customize your profile.",
+      "image_url": "/images/challenges/onchain-identity.webp",
+      "target_url": "https://base.org/names",
+      "cta_text": "Register Name",
+      "function_signature": "register(string,address,uint256)",
+      "contract_address": "0x3456789012345678901234567890123456789012",
+      "token_id": "0",
+      "token_amount": "0",
+      "creator_name": "Base Identity Team",
+      "creator_image_url": "/images/creators/base-identity.webp"
+    }
+  },
+  {
+    "id": "bridge-to-base",
+    "category": "infra",
+    "curation": "beginner",
+    "is_featured": false,
+    "content": {
+      "title": "Bridge Assets to Base",
+      "short_description": "Transfer your assets from Ethereum to Base efficiently",
+      "full_description": "Learn how to bridge your assets from Ethereum mainnet to Base. This challenge introduces you to cross-chain bridging and demonstrates the cost savings of operating on Base. Bridge any amount of ETH or tokens to complete the challenge and start exploring the Base ecosystem.",
+      "image_url": "/images/challenges/bridge.webp",
+      "target_url": "https://bridge.base.org",
+      "cta_text": "Start Bridging",
+      "function_signature": "depositTransaction(address,uint256,uint64,bool,bytes)",
+      "contract_address": "0x4567890123456789012345678901234567890123",
+      "token_id": "0",
+      "token_amount": "0",
+      "creator_name": "Base Bridge Team",
+      "creator_image_url": "/images/creators/base-bridge.webp"
+    }
+  },
+  {
+    "id": "yield-farming-intro",
+    "category": "defi",
+    "curation": "advanced",
+    "is_featured": false,
+    "content": {
+      "title": "Yield Farming on Base",
+      "short_description": "Start earning passive income through liquidity provision",
+      "full_description": "Dive into DeFi yield farming on Base. This advanced challenge teaches you how to provide liquidity to decentralized exchanges and earn rewards. Learn about impermanent loss, APY calculations, and liquidity pool dynamics while earning real yield on your assets.",
+      "image_url": "/images/challenges/yield-farming.webp",
+      "target_url": "https://base.org/challenges/yield-farming",
+      "cta_text": "Start Farming",
+      "function_signature": "addLiquidity(address,address,uint256,uint256,uint256,uint256,address,uint256)",
+      "contract_address": "0x5678901234567890123456789012345678901234",
+      "token_id": "0",
+      "token_amount": "0",
+      "creator_name": "Base DeFi Labs",
+      "creator_image_url": "/images/creators/base-defi-labs.webp"
+    }
+  },
+  {
+    "id": "smart-contract-deploy",
+    "category": "infra",
+    "curation": "developer",
+    "is_featured": false,
+    "content": {
+      "title": "Deploy Your First Smart Contract",
+      "short_description": "Deploy and verify a smart contract on Base",
+      "full_description": "Take your first step as a Base developer by deploying your own smart contract. This challenge covers the entire deployment process, from compiling your Solidity code to verifying it on the block explorer. Learn best practices for gas optimization and contract security.",
+      "image_url": "/images/challenges/smart-contract.webp",
+      "target_url": "https://docs.base.org/guides/deploy-smart-contracts",
+      "cta_text": "Deploy Contract",
+      "function_signature": "create(bytes)",
+      "contract_address": "0x6789012345678901234567890123456789012345",
+      "token_id": "0",
+      "token_amount": "0",
+      "creator_name": "Base Developer Relations",
+      "creator_image_url": "/images/creators/base-devrel.webp"
+    }
+  }
+]
