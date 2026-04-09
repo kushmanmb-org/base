@@ -4016,6 +4016,14 @@
     "subcategory": "dex"
   },
   {
+    "name": "Tether",
+    "category": "defi",
+    "subcategory": "stablecoin",
+    "description": "USDT is a stablecoin pegged to the US dollar, providing stability and liquidity across blockchain networks.",
+    "url": "https://tether.to",
+    "imageUrl": "/images/partners/tether.svg"
+  },
+  {
     "name": "Thales",
     "url": "https://thalesmarket.io/",
     "description": "Thales provides an oracle-based automated liquidity solution that is used to create various types of onchain Positional Markets limited only by the amount of data that is available to the blockchain.",
@@ -4768,11 +4776,11 @@
     "subcategory": "bridge"
   },
   {
-  "name": "Melvin",
-  "url": "https://melvin.wtf",
-  "description": "Melvin's ERC-8004 based agents scans prediction markets 24/7 and automatically hedges your positions so you profit regardless of outcome.",
-  "imageUrl": "/images/partners/melvin25.png",
-  "category": "ai",
-  "subcategory": "ai"
+    "name": "Melvin",
+    "url": "https://melvin.wtf",
+    "description": "Melvin's ERC-8004 based agents scans prediction markets 24/7 and automatically hedges your positions so you profit regardless of outcome.",
+    "imageUrl": "/images/partners/melvin25.png",
+    "category": "ai",
+    "subcategory": "ai"
   }
 ]
