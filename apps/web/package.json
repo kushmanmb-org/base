@@ -69,7 +69,7 @@
     "jsonwebtoken": "^9.0.2",
     "kysely": "^0.27.6",
     "motion": "^12.3.1",
-    "next": "^15.5.10",
+    "next": "^15.5.18",
     "permissionless": "^0.1.41",
     "pg": "^8.12.0",
     "pinata": "^0.4.0",
